@@ -3,31 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MOD | Smooth Chocolate Loader</title>
+  <title>MOD | Luxury Dessert Reveal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=6" />
 </head>
 <body>
   <section class="loader" id="loader" aria-label="Loading MOD website">
-    <canvas id="liquidCanvas" class="liquid-canvas" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="light light-a" aria-hidden="true"></div>
+    <div class="light light-b" aria-hidden="true"></div>
+    <div class="spotlight" aria-hidden="true"></div>
 
-    <div class="ambient ambient-purple"></div>
-    <div class="ambient ambient-orange"></div>
+    <div class="loader-stage">
+      <p class="small-title">Moods of Desserts</p>
 
-    <div class="brand-loader">
-      <div class="logo-wrap" id="logoWrap">
-        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts" class="logo logo-shadow" />
-        <div class="logo-reveal" id="logoReveal">
-          <img src="assets/mod-logo.png" alt="" class="logo" />
-          <span class="gloss"></span>
+      <div class="logo-shell" id="logoShell">
+        <div class="logo-shadow" aria-hidden="true"></div>
+        <div class="reveal-mask" id="revealMask">
+          <img src="assets/mod-logo.png" alt="MOD Moods of Desserts" class="logo" />
+          <span class="shine" id="shine" aria-hidden="true"></span>
         </div>
       </div>
 
-      <div class="loader-text">
-        <p>Preparing something sweet</p>
-        <div class="progress"><span id="progressFill"></span></div>
+      <div class="loader-copy">
+        <p>Crafting your dessert moment</p>
+        <div class="progress" aria-hidden="true"><span id="progressFill"></span></div>
       </div>
     </div>
   </section>
@@ -40,8 +42,8 @@
 
     <section class="hero">
       <p class="eyebrow">Moods of Desserts</p>
-      <h1>Desserts made for every mood.</h1>
-      <p class="subtext">A clean dessert landing page with a smooth chocolate-curtain brand reveal.</p>
+      <h1>Premium desserts for every mood.</h1>
+      <p class="subtext">A warm, handcrafted dessert experience designed with soft motion and clean brand details.</p>
       <div class="cta-row">
         <a href="#">Order on Instagram</a>
         <a href="#" class="secondary">View Menu</a>
@@ -49,6 +51,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
