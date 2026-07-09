@@ -3,40 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MOD Loader Animation</title>
+  <title>MOD | Premium Dessert Loader</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="page-content" aria-hidden="true">
-    <section class="hero-preview">
-      <p class="eyebrow">Moods of Desserts</p>
-      <h1>Freshly made desserts for every mood.</h1>
-      <p>Homepage preview appears after the loader fades out.</p>
+  <main class="site" id="site" aria-hidden="true">
+    <section class="hero">
+      <div class="hero-media">
+        <div class="dessert-card card-one"></div>
+        <div class="dessert-card card-two"></div>
+        <div class="dessert-card card-three"></div>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">Moods of Desserts</p>
+        <h1>Desserts made for every mood.</h1>
+        <p class="subcopy">A premium landing page preview with the loader melting into the hero section.</p>
+        <div class="actions">
+          <a href="#">Order on Instagram</a>
+          <a href="#" class="ghost">View Menu</a>
+        </div>
+      </div>
     </section>
   </main>
 
   <section class="loader" id="loader" aria-label="Loading Moods of Desserts website">
-    <div class="ambient ambient-one"></div>
-    <div class="ambient ambient-two"></div>
+    <canvas id="dust"></canvas>
+    <div class="cream-noise"></div>
+    <div class="glow glow-purple"></div>
+    <div class="glow glow-gold"></div>
 
-    <div class="logo-stage">
-      <div class="melt-shadow"></div>
-      <div class="logo-mask">
-        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts logo" class="mod-logo" />
-        <span class="shine"></span>
+    <div class="droplet" aria-hidden="true"></div>
+    <div class="impact-ripple ripple-one" aria-hidden="true"></div>
+    <div class="impact-ripple ripple-two" aria-hidden="true"></div>
+
+    <div class="logo-plate" id="plate">
+      <div class="plate-shadow"></div>
+      <div class="glass-disc"></div>
+      <div class="liquid-window">
+        <div class="liquid-rise"></div>
+        <div class="liquid-wave"></div>
+        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts logo" class="logo" />
+        <div class="logo-reflection"></div>
+        <span class="logo-shine"></span>
       </div>
-
-      <div class="sprinkles" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <div class="sugar-burst" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
       </div>
     </div>
 
-    <div class="progress-wrap">
-      <div class="progress-bar"><span></span></div>
+    <div class="loader-copy">
       <p>Preparing something sweet...</p>
+      <div class="choco-progress" aria-hidden="true"><span></span></div>
+    </div>
+
+    <div class="melt-curtain" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
     </div>
   </section>
 
