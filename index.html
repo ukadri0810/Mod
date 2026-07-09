@@ -3,33 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>MOD | Premium Loader</title>
+  <title>MOD | Smooth Chocolate Loader</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=5" />
 </head>
 <body>
-  <section class="loader" id="loader" aria-label="Loading">
-    <div class="glow glow-one"></div>
-    <div class="glow glow-two"></div>
+  <section class="loader" id="loader" aria-label="Loading MOD website">
+    <canvas id="liquidCanvas" class="liquid-canvas" aria-hidden="true"></canvas>
 
-    <div class="loader-card">
-      <div class="logo-stage">
-        <div class="plate"></div>
-        <div class="liquid-mask"></div>
-        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts" class="logo" />
-        <div class="shine"></div>
+    <div class="ambient ambient-purple"></div>
+    <div class="ambient ambient-orange"></div>
+
+    <div class="brand-loader">
+      <div class="logo-wrap" id="logoWrap">
+        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts" class="logo logo-shadow" />
+        <div class="logo-reveal" id="logoReveal">
+          <img src="assets/mod-logo.png" alt="" class="logo" />
+          <span class="gloss"></span>
+        </div>
       </div>
 
-      <div class="loader-copy">
+      <div class="loader-text">
         <p>Preparing something sweet</p>
-        <div class="bar"><span></span></div>
+        <div class="progress"><span id="progressFill"></span></div>
       </div>
-    </div>
-
-    <div class="melt-screen" aria-hidden="true">
-      <span></span><span></span><span></span><span></span>
     </div>
   </section>
 
@@ -40,19 +39,16 @@
     </nav>
 
     <section class="hero">
-      <div>
-        <p class="eyebrow">Moods of Desserts</p>
-        <h1>Desserts made for every mood.</h1>
-        <p class="subtext">A premium dessert landing page concept with a smooth chocolate-melt brand reveal.</p>
-        <div class="cta-row">
-          <a href="#">Order on Instagram</a>
-          <a href="#" class="secondary">View Menu</a>
-        </div>
+      <p class="eyebrow">Moods of Desserts</p>
+      <h1>Desserts made for every mood.</h1>
+      <p class="subtext">A clean dessert landing page with a smooth chocolate-curtain brand reveal.</p>
+      <div class="cta-row">
+        <a href="#">Order on Instagram</a>
+        <a href="#" class="secondary">View Menu</a>
       </div>
-      <div class="hero-blob"></div>
     </section>
   </main>
 
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
