@@ -3,67 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MOD | Premium Dessert Loader</title>
+  <title>MOD | Smooth Premium Loader</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="site" id="site" aria-hidden="true">
-    <section class="hero">
-      <div class="hero-media">
-        <div class="dessert-card card-one"></div>
-        <div class="dessert-card card-two"></div>
-        <div class="dessert-card card-three"></div>
+  <section class="loader" id="loader">
+    <div class="ambient"></div>
+    <div class="grain"></div>
+    <div class="stage">
+      <div class="logo-wrap" id="logoWrap">
+        <div class="soft-shadow"></div>
+        <div class="melt-backdrop">
+          <span class="wave wave-a"></span>
+          <span class="wave wave-b"></span>
+          <span class="drip drip-1"></span>
+          <span class="drip drip-2"></span>
+          <span class="drip drip-3"></span>
+        </div>
+        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts" class="brand-logo" />
+        <span class="highlight"></span>
       </div>
-      <div class="hero-copy">
+      <div class="loading-ui">
+        <p>Preparing something sweet</p>
+        <div class="progress"><span></span></div>
+      </div>
+    </div>
+    <div class="exit-melt"><span></span><span></span><span></span><span></span></div>
+  </section>
+
+  <main class="page" id="page">
+    <nav class="nav">
+      <img src="assets/mod-logo.png" alt="MOD" />
+      <a href="#">Instagram</a>
+    </nav>
+    <section class="hero">
+      <div class="hero-text">
         <p class="eyebrow">Moods of Desserts</p>
         <h1>Desserts made for every mood.</h1>
-        <p class="subcopy">A premium landing page preview with the loader melting into the hero section.</p>
-        <div class="actions">
-          <a href="#">Order on Instagram</a>
-          <a href="#" class="ghost">View Menu</a>
-        </div>
+        <p>A cinematic landing page concept with a smooth chocolate-melt brand reveal.</p>
+        <div class="cta-row"><a href="#">Order on Instagram</a><a class="secondary" href="#">View Menu</a></div>
+      </div>
+      <div class="hero-art">
+        <div class="dessert-orb"></div>
       </div>
     </section>
   </main>
-
-  <section class="loader" id="loader" aria-label="Loading Moods of Desserts website">
-    <canvas id="dust"></canvas>
-    <div class="cream-noise"></div>
-    <div class="glow glow-purple"></div>
-    <div class="glow glow-gold"></div>
-
-    <div class="droplet" aria-hidden="true"></div>
-    <div class="impact-ripple ripple-one" aria-hidden="true"></div>
-    <div class="impact-ripple ripple-two" aria-hidden="true"></div>
-
-    <div class="logo-plate" id="plate">
-      <div class="plate-shadow"></div>
-      <div class="glass-disc"></div>
-      <div class="liquid-window">
-        <div class="liquid-rise"></div>
-        <div class="liquid-wave"></div>
-        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts logo" class="logo" />
-        <div class="logo-reflection"></div>
-        <span class="logo-shine"></span>
-      </div>
-      <div class="sugar-burst" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-      </div>
-    </div>
-
-    <div class="loader-copy">
-      <p>Preparing something sweet...</p>
-      <div class="choco-progress" aria-hidden="true"><span></span></div>
-    </div>
-
-    <div class="melt-curtain" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-  </section>
-
   <script src="script.js"></script>
 </body>
 </html>
