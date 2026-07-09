@@ -1,163 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MOD — Chocolate Seal Loader</title>
-  <style>
-    :root{
-      --cream:#fff2db;
-      --cream-2:#ffe7bc;
-      --plum:#5a0f4d;
-      --plum-2:#7a176d;
-      --gold:#f4a62a;
-      --brown:#4b173f;
-      --text:#43123a;
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{width:100%;min-height:100%;font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
-
-    body:before{
-      content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
-      background:
-        radial-gradient(circle at 20% 18%, rgba(255,183,75,.35), transparent 30%),
-        radial-gradient(circle at 78% 32%, rgba(108,23,92,.22), transparent 34%),
-        linear-gradient(135deg, #fff8ed, var(--cream) 46%, #ffe2af);
-    }
-
-    .site{min-height:100vh;opacity:0;transform:translateY(22px);transition:opacity 1s cubic-bezier(.19,1,.22,1), transform 1s cubic-bezier(.19,1,.22,1)}
-    body.loaded .site{opacity:1;transform:none}
-    .hero{min-height:100vh;display:grid;place-items:center;text-align:center;padding:32px;position:relative;overflow:hidden}
-    .hero:before{content:"";position:absolute;left:50%;top:-22%;width:78vmin;height:78vmin;background:radial-gradient(circle, rgba(91,15,77,.22), transparent 65%);filter:blur(30px);transform:translateX(-50%)}
-    .hero-card{position:relative;max-width:780px;padding:clamp(28px,6vw,70px);border:1px solid rgba(91,15,77,.14);border-radius:34px;background:rgba(255,255,255,.38);backdrop-filter:blur(18px);box-shadow:0 30px 80px rgba(77,25,20,.14)}
-    .hero-kicker{font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:#8c4f11;font-weight:700;margin-bottom:16px}
-    .hero h1{font-family:Georgia,serif;font-size:clamp(38px,8vw,92px);line-height:.93;color:#4b123e;margin-bottom:18px}
-    .hero p{max-width:560px;margin:0 auto 28px;font-size:clamp(16px,2vw,20px);line-height:1.7;color:#6a385c}
-    .cta{display:inline-flex;gap:10px;align-items:center;background:#5a0f4d;color:#fff;border-radius:999px;padding:15px 24px;text-decoration:none;font-weight:700;box-shadow:0 18px 35px rgba(90,15,77,.28)}
-
-    /* LOADER */
-    .loader{position:fixed;inset:0;z-index:99;display:grid;place-items:center;overflow:hidden;background:
-      radial-gradient(circle at 50% 38%, rgba(255,185,75,.28), transparent 24%),
-      radial-gradient(circle at 55% 42%, rgba(91,15,77,.20), transparent 35%),
-      linear-gradient(135deg,#fff8ed 0%,#ffecc9 58%,#ffd999 100%);
-      transition:opacity .9s cubic-bezier(.19,1,.22,1), visibility .9s;
-    }
-    body.loaded .loader{opacity:0;visibility:hidden}
-
-    .loader:before{content:"";position:absolute;inset:-25%;background:conic-gradient(from 200deg, transparent 0 24%, rgba(255,255,255,.38) 30%, transparent 40% 100%);animation:ambient 5.2s linear infinite;filter:blur(26px);opacity:.55}
-    @keyframes ambient{to{transform:rotate(1turn)}}
-
-    .stage{position:relative;width:min(84vw,480px);height:min(84vw,480px);display:grid;place-items:center;isolation:isolate;transform:translate3d(0,0,0)}
-
-    .drop{position:absolute;top:2%;left:50%;width:28px;height:36px;border-radius:58% 58% 65% 65% / 45% 45% 80% 80%;background:linear-gradient(145deg,#8d1c7d,#4b0c40 75%);box-shadow:inset -7px -7px 14px rgba(0,0,0,.25), inset 5px 5px 10px rgba(255,255,255,.16), 0 15px 30px rgba(90,15,77,.18);transform:translate(-50%,-120px) scale(.85);animation:dropFall 1.15s cubic-bezier(.65,.02,.22,1) forwards}
-    .drop:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.6);top:8px;left:8px;filter:blur(.5px)}
-    @keyframes dropFall{0%{transform:translate(-50%,-120px) scale(.8);opacity:0}12%{opacity:1}78%{transform:translate(-50%,-8px) scale(1)}88%{transform:translate(-50%,0) scale(1.22,.72)}100%{transform:translate(-50%,0) scale(0);opacity:0}}
-
-    .seal-wrap{position:absolute;inset:0;display:grid;place-items:center;transform:scale(.06);opacity:0;animation:sealBirth 1.25s cubic-bezier(.16,1,.3,1) .78s forwards}
-    @keyframes sealBirth{0%{transform:scale(.06);opacity:0;filter:blur(8px)}48%{transform:scale(1.06);opacity:1;filter:blur(0)}100%{transform:scale(1);opacity:1}}
-
-    .seal{width:100%;height:100%;filter:drop-shadow(0 30px 42px rgba(85,20,64,.25));animation:sealFloat 3.8s ease-in-out 1.7s infinite}
-    @keyframes sealFloat{50%{transform:translateY(-6px) scale(1.01)}}
-
-    .seal svg{width:100%;height:100%;display:block;overflow:visible}
-    .seal-shape{fill:url(#plumGradient)}
-    .seal-highlight{mix-blend-mode:screen;opacity:.42;transform-origin:center;animation:highlightPulse 2.7s ease-in-out 1.7s infinite}
-    @keyframes highlightPulse{50%{opacity:.66;transform:translateY(-4px)}}
-    .gold-ring{fill:none;stroke:url(#goldGradient);stroke-width:2.4;stroke-linecap:round;stroke-dasharray:1200;stroke-dashoffset:1200;animation:ringDraw 1.1s cubic-bezier(.19,1,.22,1) 1.05s forwards;opacity:.82}
-    @keyframes ringDraw{to{stroke-dashoffset:0}}
-
-    .logo-shell{position:absolute;inset:7%;display:grid;place-items:center;z-index:4;clip-path:circle(0% at 50% 50%);opacity:0;filter:blur(14px);animation:logoReveal 1.35s cubic-bezier(.19,1,.22,1) 1.32s forwards}
-    .logo{width:82%;max-width:370px;height:auto;display:block;filter:drop-shadow(0 15px 20px rgba(36,8,31,.22));transform:scale(.92);animation:logoSettle 1.4s cubic-bezier(.19,1,.22,1) 1.32s forwards, logoBreathe 4s ease-in-out 2.8s infinite}
-    @keyframes logoReveal{0%{clip-path:circle(0% at 50% 50%);opacity:0;filter:blur(14px)}65%{opacity:1;filter:blur(1px)}100%{clip-path:circle(75% at 50% 50%);opacity:1;filter:blur(0)}}
-    @keyframes logoSettle{to{transform:scale(1)}}
-    @keyframes logoBreathe{50%{transform:translateY(-4px) scale(1.012)}}
-
-    .gloss{position:absolute;z-index:5;top:15%;bottom:15%;width:82px;left:-30%;background:linear-gradient(90deg, transparent, rgba(255,255,255,.68), transparent);filter:blur(9px);transform:skewX(-20deg);opacity:0;animation:glossSweep 1.05s cubic-bezier(.19,1,.22,1) 2.35s forwards}
-    @keyframes glossSweep{0%{left:-30%;opacity:0}18%{opacity:.62}100%{left:115%;opacity:0}}
-
-    .copy{position:absolute;top:calc(50% + min(42vw,246px));left:50%;transform:translateX(-50%);text-align:center;width:100%;z-index:6;opacity:0;animation:copyIn .8s cubic-bezier(.19,1,.22,1) 2s forwards}
-    .copy p{font-size:clamp(13px,3.2vw,15px);letter-spacing:.18em;text-transform:uppercase;color:#592146;font-weight:800;margin-bottom:16px;white-space:nowrap}
-    .progress{width:min(68vw,280px);height:4px;border-radius:999px;background:rgba(90,15,77,.16);margin:0 auto;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
-    .progress span{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#f4a62a,#ffd176,#f4a62a);animation:loadLine 2.3s cubic-bezier(.19,1,.22,1) 1.75s forwards}
-    @keyframes copyIn{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
-    @keyframes loadLine{to{width:100%}}
-
-    .curtain{position:absolute;left:0;right:0;bottom:-3%;height:0;background:linear-gradient(180deg,#631153,#3e0c35);z-index:7;border-radius:50% 50% 0 0 / 18% 18% 0 0;animation:exitMelt 1s cubic-bezier(.7,0,.3,1) 4.1s forwards;box-shadow:0 -24px 60px rgba(90,15,77,.22)}
-    @keyframes exitMelt{0%{height:0}42%{height:104%;border-radius:48% 52% 0 0 / 14% 18% 0 0}100%{height:0;bottom:103%;border-radius:0}}
-
-    @media(max-width:600px){
-      .stage{width:min(82vw,330px);height:min(82vw,330px)}
-      .logo-shell{inset:8%}.logo{width:84%}.copy{top:calc(50% + min(43vw,180px))}
-      .drop{width:22px;height:29px}
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *,*::before,*::after{animation:none!important;transition:none!important}.loader{display:none}.site{opacity:1;transform:none}
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOD Premium Logo Loader</title>
+<style>
+:root{
+  --cream:#f7f5ee;
+  --purple:#5c165d;
+  --gold:#fbb03b;
+  --caramel:#c7782e;
+  --ink:#2a102a;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}.loader{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,#fff8ed 0 18%,#f7f5ee 54%,#eee5d7 100%);animation:loaderExit 1.05s cubic-bezier(.7,0,.2,1) 5.6s forwards}.ambient{position:absolute;inset:-20%;background:radial-gradient(circle at 35% 25%,rgba(251,176,59,.28),transparent 26%),radial-gradient(circle at 70% 70%,rgba(92,22,93,.16),transparent 30%);filter:blur(22px);animation:ambientMove 5.6s ease-in-out both}.logo-wrap{position:relative;width:min(78vw,520px);aspect-ratio:468/560;transform-origin:center;animation:logoExit 1s cubic-bezier(.7,0,.2,1) 5.45s forwards}.seal{position:absolute;left:0;top:0;width:100%;height:auto;transform-origin:50% 45%;}.blob-shadow{opacity:0;transform:scale(.55);filter:blur(10px);animation:blobIn 1.05s cubic-bezier(.17,.84,.28,1) .35s forwards, breathe 3s ease-in-out 1.7s infinite}.blob{opacity:0;transform:scale(.24) rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(92,22,93,.2));animation:blobIn 1.15s cubic-bezier(.17,.84,.28,1) .48s forwards, blobSettle 1.8s ease-in-out 1.6s infinite}.blob-highlight{opacity:0;transform:scale(.72);mix-blend-mode:screen;animation:highlightIn .9s ease 1.25s forwards}.letter{position:absolute;height:auto;opacity:0;filter:blur(10px);transform:translateY(20px) scale(.94);animation:letterIn .85s cubic-bezier(.16,1,.3,1) forwards}.m{width:22.8%;left:24.8%;top:32.6%;animation-delay:1.48s}.d{width:20.1%;left:57.4%;top:32.6%;animation-delay:1.68s}.ice{position:absolute;width:22.5%;left:43.6%;top:23.8%;opacity:0;filter:blur(8px);transform:translateY(-44px) scale(.92);animation:iceIn 1s cubic-bezier(.18,.92,.22,1) 1.88s forwards}.tagline{position:absolute;width:69.2%;left:15.4%;top:68.8%;opacity:0;filter:blur(8px);transform:translateY(14px);animation:tagIn .95s cubic-bezier(.16,1,.3,1) 2.55s forwards}.gloss{position:absolute;left:-38%;top:8%;width:22%;height:74%;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);filter:blur(18px);transform:rotate(-24deg);opacity:0;animation:glossSweep 1.35s cubic-bezier(.4,0,.2,1) 3.45s forwards}.caption{position:absolute;left:0;right:0;bottom:2%;text-align:center;font-size:clamp(12px,2vw,15px);letter-spacing:.18em;text-transform:uppercase;color:rgba(42,16,42,.58);opacity:0;transform:translateY(8px);animation:captionIn .8s ease 3.05s forwards}.progress{position:absolute;left:24%;right:24%;bottom:-3%;height:2px;border-radius:99px;background:rgba(92,22,93,.14);overflow:hidden;opacity:0;animation:captionIn .8s ease 3.05s forwards}.progress:before{content:"";display:block;height:100%;width:0;background:linear-gradient(90deg,#5c165d,#fbb03b);animation:fill 1.65s cubic-bezier(.6,0,.2,1) 3.25s forwards}.home{min-height:100vh;display:grid;place-items:center;padding:28px;background:linear-gradient(135deg,#fffaf2,#f3eadf);opacity:0;transform:translateY(28px);animation:homeIn 1s ease 5.85s forwards}.home-card{max-width:780px;text-align:center}.home h1{font-size:clamp(44px,8vw,92px);line-height:.9;margin:0;color:#5c165d}.home p{font-size:clamp(16px,2vw,22px);line-height:1.6;color:#6d536d}.home button{border:0;border-radius:999px;padding:15px 24px;background:#5c165d;color:white;font-weight:700;box-shadow:0 14px 35px rgba(92,22,93,.22)}@keyframes ambientMove{0%{transform:translate3d(-2%,2%,0) scale(1.05)}100%{transform:translate3d(2%,-2%,0) scale(1)}}@keyframes blobIn{0%{opacity:0;transform:scale(.2) rotate(-10deg)}70%{opacity:1;transform:scale(1.035) rotate(.6deg)}100%{opacity:1;transform:scale(1) rotate(0)}}@keyframes blobSettle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.012)}}@keyframes breathe{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.012);opacity:1}}@keyframes highlightIn{to{opacity:1;transform:scale(1)}}@keyframes letterIn{0%{opacity:0;filter:blur(12px);transform:translateY(22px) scale(.94)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}@keyframes iceIn{0%{opacity:0;filter:blur(10px);transform:translateY(-52px) scale(.9)}70%{opacity:1;filter:blur(0);transform:translateY(4px) scale(1.035)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}@keyframes tagIn{to{opacity:1;filter:blur(0);transform:translateY(0)}}@keyframes glossSweep{0%{opacity:0;left:-35%}18%{opacity:.75}100%{opacity:0;left:116%}}@keyframes captionIn{to{opacity:1;transform:translateY(0)}}@keyframes fill{to{width:100%}}@keyframes logoExit{to{transform:translateY(-34vh) scale(.42);opacity:0;filter:blur(10px)}}@keyframes loaderExit{to{opacity:0;visibility:hidden;pointer-events:none}}@keyframes homeIn{to{opacity:1;transform:translateY(0)}}@media (max-width:480px){.logo-wrap{width:90vw}.m{left:24.2%}.d{left:58%}.tagline{width:74%;left:13%;top:68.6%}.caption{bottom:0}.progress{bottom:-4%;left:18%;right:18%}}
+</style>
 </head>
 <body>
-  <div class="loader" aria-label="Loading MOD Moods of Desserts">
-    <div class="stage">
-      <div class="drop"></div>
-
-      <div class="seal-wrap">
-        <div class="seal" aria-hidden="true">
-          <svg viewBox="0 0 500 500" role="img">
-            <defs>
-              <radialGradient id="plumGradient" cx="38%" cy="28%" r="72%">
-                <stop offset="0%" stop-color="#8d1d80"/>
-                <stop offset="52%" stop-color="#631153"/>
-                <stop offset="100%" stop-color="#3b0b33"/>
-              </radialGradient>
-              <linearGradient id="goldGradient" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#ffe2a1"/>
-                <stop offset="45%" stop-color="#f4a62a"/>
-                <stop offset="100%" stop-color="#fff0bc"/>
-              </linearGradient>
-              <radialGradient id="shine" cx="28%" cy="20%" r="70%">
-                <stop offset="0%" stop-color="rgba(255,255,255,.75)"/>
-                <stop offset="42%" stop-color="rgba(255,255,255,.14)"/>
-                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-              </radialGradient>
-            </defs>
-            <path class="seal-shape" d="M250 26 C278 24 290 57 315 61 C342 65 365 43 386 61 C408 79 398 113 418 131 C439 149 474 145 484 173 C494 200 463 219 469 246 C475 273 507 294 494 320 C481 346 443 337 426 358 C409 379 420 416 393 430 C367 444 342 415 316 424 C290 433 280 470 251 470 C222 470 211 433 186 424 C160 415 135 444 109 431 C82 417 93 380 74 359 C56 339 18 347 6 321 C-7 295 25 274 31 247 C37 220 6 201 16 174 C26 147 61 150 82 132 C102 114 93 80 115 62 C137 44 159 66 185 62 C211 58 222 28 250 26 Z" />
-            <path class="seal-highlight" fill="url(#shine)" d="M109 154 C152 71 283 61 359 116 C295 105 254 121 205 154 C165 181 137 182 109 154 Z"/>
-            <path class="gold-ring" d="M250 38 C277 37 289 68 313 72 C338 76 359 55 379 72 C399 89 389 121 408 138 C428 155 461 151 471 176 C481 202 451 220 457 246 C463 272 493 292 481 316 C469 341 433 332 417 352 C401 372 411 407 386 420 C361 433 337 406 312 414 C287 423 277 458 250 458 C223 458 213 423 188 414 C163 406 139 433 114 420 C89 407 99 372 82 353 C65 333 30 341 19 316 C7 292 37 272 43 247 C49 221 20 203 29 177 C39 152 72 155 91 138 C111 121 102 89 122 72 C143 55 164 76 189 72 C213 68 224 40 250 38 Z" />
-          </svg>
-        </div>
-      </div>
-
-      <div class="logo-shell">
-        <img class="logo" src="assets/mod-logo.png" alt="MOD Moods of Desserts logo" />
-        <div class="gloss"></div>
-      </div>
-    </div>
-
-    <div class="copy">
-      <p>Crafting your dessert moment</p>
-      <div class="progress"><span></span></div>
-    </div>
-
-    <div class="curtain"></div>
+<div class="loader" aria-label="Loading MOD website">
+  <div class="ambient"></div>
+  <div class="logo-wrap">
+    <img class="seal blob-shadow" src="assets/blob-shadow.svg" alt="" />
+    <img class="seal blob" src="assets/blob.svg" alt="" />
+    <img class="seal blob-highlight" src="assets/blob-highlight.svg" alt="" />
+    <img class="letter m" src="assets/m.svg" alt="M" />
+    <img class="ice" src="assets/icecream-o.svg" alt="O ice cream" />
+    <img class="letter d" src="assets/d.svg" alt="D" />
+    <img class="tagline" src="assets/tagline.svg" alt="Moods of Desserts" />
+    <div class="gloss"></div>
+    <div class="caption">Crafting your dessert moment</div>
+    <div class="progress"></div>
   </div>
-
-  <main class="site">
-    <section class="hero">
-      <div class="hero-card">
-        <div class="hero-kicker">Moods of Desserts</div>
-        <h1>Sweet moments, made memorable.</h1>
-        <p>A premium dessert experience crafted with warm flavours, playful moods, and indulgent presentation.</p>
-        <a href="#" class="cta">Explore desserts</a>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => document.body.classList.add('loaded'), 4850);
-    });
-  </script>
+</div>
+<main class="home">
+  <section class="home-card">
+    <h1>Moods of Desserts</h1>
+    <p>A soft, premium landing-page placeholder so the loader transitions into a real website instead of a blank screen.</p>
+    <button>Explore Desserts</button>
+  </section>
+</main>
+<script>
+window.addEventListener('load',()=>{document.documentElement.classList.add('ready')});
+</script>
 </body>
 </html>
