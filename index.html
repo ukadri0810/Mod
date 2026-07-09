@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOD Loader Animation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-content" aria-hidden="true">
+    <section class="hero-preview">
+      <p class="eyebrow">Moods of Desserts</p>
+      <h1>Freshly made desserts for every mood.</h1>
+      <p>Homepage preview appears after the loader fades out.</p>
+    </section>
+  </main>
+
+  <section class="loader" id="loader" aria-label="Loading Moods of Desserts website">
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <div class="logo-stage">
+      <div class="melt-shadow"></div>
+      <div class="logo-mask">
+        <img src="assets/mod-logo.png" alt="MOD Moods of Desserts logo" class="mod-logo" />
+        <span class="shine"></span>
+      </div>
+
+      <div class="sprinkles" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><span></span></div>
+      <p>Preparing something sweet...</p>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
