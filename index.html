@@ -2,33 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#5a214f" />
-  <meta name="description" content="Moods of Desserts, Chiplun — burgers, sandwiches, momos, fries, sundaes and shakes made for every craving." />
-  <title>Moods of Desserts — Chiplun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#180b17" />
+  <meta name="description" content="Moods of Desserts, Chiplun — food for every mood. Burgers, pizza, momos, fries, sandwiches, shakes and desserts." />
+  <title>MOD — Moods of Desserts, Chiplun</title>
+  <link rel="icon" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="is-loading">
   <noscript>
-    <div class="noscript">Please enable JavaScript to view this experience.</div>
+    <div class="noscript">This website needs JavaScript enabled to play the MOD experience.</div>
   </noscript>
 
-  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Moods of Desserts">
-    <div class="loader__grain" aria-hidden="true"></div>
+  <!-- Premium loader: intentionally self-contained and does not depend on any animation library. -->
+  <div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Preparing Moods of Desserts">
+    <div class="preloader__noise" aria-hidden="true"></div>
+    <div class="preloader__panel preloader__panel--top" aria-hidden="true"></div>
+    <div class="preloader__panel preloader__panel--bottom" aria-hidden="true"></div>
 
-    <div class="loader__topline">
+    <div class="preloader__meta">
       <span>MOD / CHIPLUN</span>
-      <span>EST. FOR EVERY MOOD</span>
+      <span>FOOD FOR EVERY MOOD</span>
     </div>
 
-    <div class="loader__experience">
-      <div class="loader__copy">
-        <p class="loader__eyebrow">PREPARING YOUR NEXT CRAVING</p>
-        <div class="loader__word-window" aria-hidden="true">
-          <div class="loader__words" id="loaderWords">
+    <div class="preloader__stage">
+      <div class="preloader__orbital" aria-hidden="true">
+        <span class="preloader__orbit preloader__orbit--one"></span>
+        <span class="preloader__orbit preloader__orbit--two"></span>
+        <span class="preloader__spark preloader__spark--one"></span>
+        <span class="preloader__spark preloader__spark--two"></span>
+        <span class="preloader__spark preloader__spark--three"></span>
+        <div class="preloader__plate">
+          <img src="assets/logo-transparent.png" alt="" />
+        </div>
+      </div>
+
+      <div class="preloader__copy">
+        <p>PREPARING YOUR MOOD</p>
+        <div class="preloader__word-window" aria-hidden="true">
+          <div class="preloader__words" id="loaderWords">
             <span>CRISPY.</span>
             <span>CHEESY.</span>
             <span>SPICY.</span>
@@ -36,282 +51,273 @@
             <span>READY.</span>
           </div>
         </div>
-        <p class="loader__sub" id="loaderStatus">One place. Every mood.</p>
-      </div>
-
-      <div class="loader__dial" aria-hidden="true">
-        <svg viewBox="0 0 240 240" role="presentation">
-          <circle class="loader__track" cx="120" cy="120" r="96"></circle>
-          <circle class="loader__progress" id="loaderProgress" cx="120" cy="120" r="96"></circle>
-        </svg>
-        <span class="loader__orbit" id="loaderOrbit"></span>
-        <div class="loader__logo-shell">
-          <div class="loader__logo-wrap">
-            <img src="assets/logo.webp" alt="" />
-          </div>
-        </div>
-        <span class="loader__mood loader__mood--one">CRUNCH</span>
-        <span class="loader__mood loader__mood--two">MELT</span>
-        <span class="loader__mood loader__mood--three">HEAT</span>
-        <span class="loader__mood loader__mood--four">SWEET</span>
+        <small id="loaderStatus">Warming up the grill.</small>
       </div>
     </div>
 
-    <div class="loader__footer">
-      <span class="loader__footer-label">LOADING THE MENU</span>
-      <div class="loader__bar" aria-hidden="true"><span id="loaderBar"></span></div>
-      <span class="loader__count" id="loaderCount">00%</span>
+    <div class="preloader__progress-wrap">
+      <span>LOADING THE GOOD STUFF</span>
+      <div class="preloader__progress"><i id="loaderBar"></i></div>
+      <strong id="loaderCount">00</strong>
     </div>
   </div>
 
   <header class="site-header" id="top">
     <a class="brand" href="#top" aria-label="Moods of Desserts home">
-      <img src="assets/logo.webp" alt="Moods of Desserts" />
-      <span class="brand__text">MOODS OF DESSERTS<small>CHIPLUN</small></span>
+      <img src="assets/logo-transparent.png" alt="Moods of Desserts" />
+      <span>
+        <b>MOODS OF DESSERTS</b>
+        <small>CHIPLUN</small>
+      </span>
     </a>
 
-    <nav class="nav" aria-label="Primary navigation">
-      <a href="#moods">Pick a mood</a>
-      <a href="#favourites">Favourites</a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#menu">Our menu</a>
+      <a href="#moods">Our moods</a>
       <a href="#locations">Locations</a>
+      <a href="#about">About MOD</a>
     </nav>
 
-    <a class="header-cta magnetic" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">
-      <span>ORDER / DM</span><span aria-hidden="true">↗</span>
+    <a class="header-order" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">
+      <span>Order on Instagram</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
     </a>
 
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobileMenu">
       <span></span><span></span>
     </button>
   </header>
 
-  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-    <a href="#moods">Pick a mood</a>
-    <a href="#favourites">Favourites</a>
-    <a href="#locations">Locations</a>
-    <a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">Instagram ↗</a>
-  </div>
+  <aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu__inner">
+      <p>EXPLORE MOD</p>
+      <nav aria-label="Mobile navigation">
+        <a href="#menu"><span>01</span>Our menu</a>
+        <a href="#moods"><span>02</span>Our moods</a>
+        <a href="#locations"><span>03</span>Locations</a>
+        <a href="#about"><span>04</span>About MOD</a>
+      </nav>
+      <a class="mobile-menu__order" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">Order on Instagram ↗</a>
+    </div>
+  </aside>
 
   <main>
-    <section class="cinema-hero" aria-labelledby="hero-title" id="home">
-      <div class="cinema-hero__grain" aria-hidden="true"></div>
-      <div class="cinema-hero__glow" aria-hidden="true"></div>
+    <section class="hero" id="home" aria-labelledby="heroTitle">
+      <div class="hero__backdrops" id="heroBackdrops" aria-hidden="true">
+        <div class="hero-backdrop is-active" style="--blur:url('assets/pizza-blur.webp')"></div>
+        <div class="hero-backdrop" style="--blur:url('assets/burger-blur.webp')"></div>
+        <div class="hero-backdrop" style="--blur:url('assets/sandwich-blur.webp')"></div>
+        <div class="hero-backdrop" style="--blur:url('assets/momos-blur.webp')"></div>
+        <div class="hero-backdrop" style="--blur:url('assets/fries-blur.webp')"></div>
+        <div class="hero-backdrop" style="--blur:url('assets/sundae-blur.webp')"></div>
+        <div class="hero-backdrop" style="--blur:url('assets/mojito-blur.webp')"></div>
+      </div>
+      <div class="hero__veil" aria-hidden="true"></div>
+      <div class="hero__texture" aria-hidden="true"></div>
 
-      <div class="cinema-hero__copy">
-        <p class="kicker cinema-hero__kicker"><span></span> BURGERS • DESSERTS • MORE</p>
-
-        <h1 id="hero-title" class="cinema-hero__title">
-          <span>WHAT'S</span>
-          <span>YOUR</span>
-          <span class="cinema-hero__brand-word">MOD?</span>
-        </h1>
-
-        <div class="cinema-hero__dynamic" aria-live="polite">
-          <span class="cinema-hero__dynamic-label">CURRENT MOOD</span>
-          <strong id="heroMoodWord">CRISPY.</strong>
-        </div>
-
-        <p class="cinema-hero__description" id="heroDescription">
-          A golden, stacked burger made for the craving you can hear before the first bite.
-        </p>
-
-        <div class="cinema-hero__actions">
-          <a class="hero-primary magnetic" href="#moods"><span>EXPLORE THE MENU</span><span aria-hidden="true">↓</span></a>
-          <a class="hero-secondary" id="heroOrderLink" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer"><span>ORDER ON INSTAGRAM</span><span aria-hidden="true">↗</span></a>
-        </div>
-
+      <div class="hero__media" id="heroMedia" aria-roledescription="carousel" aria-label="Featured dishes">
+        <figure class="hero-slide is-active" data-mood="CRISPY" data-title="VEG CRUNCHY PIZZA" data-copy="Crunchy edges, loaded toppings and cheese made for the first shared bite." data-label="THE CROWD PLEASER" data-accent="#f18a1a" data-position="69% 48%" data-mobile-position="62% 42%">
+          <img src="assets/pizza.webp" alt="Veg crunchy pizza with vegetables and cheese" fetchpriority="high" />
+        </figure>
+        <figure class="hero-slide" data-mood="STACKED" data-title="VEG CRISPY BURGER" data-copy="A golden, stacked burger made for the craving you can hear before the first bite." data-label="THE CRUNCHY ONE" data-accent="#f2a32b" data-position="70% 52%" data-mobile-position="61% 50%">
+          <img src="assets/burger.webp" alt="Veg crispy burger with fries" loading="eager" />
+        </figure>
+        <figure class="hero-slide" data-mood="CHEESY" data-title="PANEER GRILLED SANDWICH" data-copy="Toasted paneer, molten cheese and that slow pull that makes everyone look twice." data-label="THE MELTY ONE" data-accent="#f2b348" data-position="68% 52%" data-mobile-position="62% 52%">
+          <img src="assets/sandwich.webp" alt="Paneer cheese grilled sandwich" loading="lazy" />
+        </figure>
+        <figure class="hero-slide" data-mood="STEAMY" data-title="MOMOS WITH FIRE CHUTNEY" data-copy="Soft folds, a hot filling and a fiery sidekick for rainy-day cravings." data-label="THE COMFORT ONE" data-accent="#e8b37a" data-position="68% 50%" data-mobile-position="58% 49%">
+          <img src="assets/momos.webp" alt="Steamed momos with red chutney" loading="lazy" />
+        </figure>
+        <figure class="hero-slide" data-mood="SPICY" data-title="PERI PERI MAYO FRIES" data-copy="Peri peri heat, creamy mayo and the kind of fries nobody agrees to share." data-label="THE ADDICTIVE ONE" data-accent="#e66032" data-position="68% 53%" data-mobile-position="59% 52%">
+          <img src="assets/fries.webp" alt="Peri peri mayo fries" loading="lazy" />
+        </figure>
+        <figure class="hero-slide" data-mood="SWEET" data-title="KITKAT SUNDAE" data-copy="Cold vanilla, dark chocolate and KitKat crunch built for a proper sweet break." data-label="THE INDULGENT ONE" data-accent="#d34955" data-position="68% 48%" data-mobile-position="62% 47%">
+          <img src="assets/sundae.webp" alt="KitKat chocolate sundae" loading="lazy" />
+        </figure>
+        <figure class="hero-slide" data-mood="CHILLED" data-title="BLUE LAGOON MOJITO" data-copy="Fresh, fizzy and instantly refreshing — the reset button for a warm day." data-label="THE COOL ONE" data-accent="#59bde9" data-position="67% 51%" data-mobile-position="61% 50%">
+          <img src="assets/mojito.webp" alt="Blue Lagoon mojito with lemon and mint" loading="lazy" />
+        </figure>
       </div>
 
-      <div class="cinema-hero__visual" id="heroVisual" aria-roledescription="carousel" aria-label="Featured Moods of Desserts dishes">
-        <div class="cinema-hero__slides" id="heroSlides">
-          <figure class="cinema-slide is-active" data-mood="CRISPY." data-dish="VEG CRISPY BURGER" data-description="A golden, stacked burger made for the craving you can hear before the first bite." data-accent="#f39a35">
-            <img src="assets/burger.webp" alt="Crispy vegetarian burger with fries" />
-          </figure>
-          <figure class="cinema-slide" data-mood="CHEESY." data-dish="PANEER CHEESE SANDWICH" data-description="Toasted paneer, molten cheese and that slow pull that makes everyone look twice." data-accent="#f0ad48">
-            <img src="assets/sandwich.webp" alt="Paneer cheese grilled sandwich" />
-          </figure>
-          <figure class="cinema-slide" data-mood="STEAMY." data-dish="STEAMED MOMOS" data-description="Soft folds, hot filling and fiery chutney — comfort food with a little attitude." data-accent="#e8b77a">
-            <img src="assets/momos.webp" alt="Steamed momos with red chutney" />
-          </figure>
-          <figure class="cinema-slide" data-mood="SPICY." data-dish="PERI PERI MAYO FRIES" data-description="Peri peri heat, creamy mayo and fries that disappear faster than expected." data-accent="#df6547">
-            <img src="assets/fries.webp" alt="Peri peri mayonnaise fries" />
-          </figure>
-          <figure class="cinema-slide" data-mood="CREAMY." data-dish="KITKAT SUNDAE" data-description="Cold vanilla, dark chocolate and KitKat crunch built for a proper sweet break." data-accent="#c44745">
-            <img src="assets/sundae.webp" alt="KitKat chocolate sundae" />
-          </figure>
-          <figure class="cinema-slide" data-mood="INDULGENT." data-dish="BROWNIE SHAKE" data-description="Rich fudge, dark chocolate and pure indulgence blended into one tall glass." data-accent="#8d4b40">
-            <img src="assets/shake.webp" alt="Chocolate brownie shake" />
-          </figure>
+      <div class="hero__content">
+        <p class="eyebrow"><span></span> BURGERS · PIZZA · DESSERTS · MORE</p>
+        <h1 id="heroTitle"><span>WHAT'S YOUR</span><strong><em>MOD</em> TODAY?</strong></h1>
+        <div class="hero__mood-row">
+          <span>CURRENT MOOD</span>
+          <b id="heroMood">CRISPY</b>
         </div>
-
-        <div class="cinema-hero__shade" aria-hidden="true"></div>
-        <div class="cinema-hero__lines" aria-hidden="true"></div>
-
-        <div class="cinema-hero__dish-card">
-          <span id="heroSlideNumber">01 / 06</span>
-          <strong id="heroDishName">VEG CRISPY BURGER</strong>
-          <small>FRESHLY MADE • MOD</small>
+        <p class="hero__copy" id="heroCopy">Crunchy edges, loaded toppings and cheese made for the first shared bite.</p>
+        <div class="hero__actions">
+          <a class="button button--orange" href="#menu">Explore the menu <span>↘</span></a>
+          <a class="button button--outline" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">Order on Instagram <span>↗</span></a>
         </div>
-
-        <div class="cinema-hero__stamp" aria-hidden="true">
-          <span>FRESH • FAST • FULL OF FLAVOUR •</span>
-          <strong>MOD</strong>
-        </div>
-
-        <div class="cinema-hero__controls">
-          <button type="button" id="heroPrev" aria-label="Show previous dish">←</button>
-          <div class="cinema-hero__progress" aria-hidden="true"><span id="heroProgress"></span></div>
-          <button type="button" id="heroNext" aria-label="Show next dish">→</button>
-        </div>
-
-        <div class="cinema-hero__dots" id="heroDots" aria-label="Choose featured dish"></div>
       </div>
 
-      <div class="location-switcher" id="locations">
-          <div class="location-switcher__intro">
-            <span>CHOOSE YOUR NEAREST MOD</span>
-            <small>Menu, offers and ordering updates</small>
-          </div>
-          <div class="location-switcher__links">
-            <a class="location-pill is-featured" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer"><span>CHIPLUN</span><small>@mod_chiplun</small><b>↗</b></a>
-            <a class="location-pill" href="https://www.instagram.com/mod_dapoli/" target="_blank" rel="noreferrer"><span>DAPOLI</span><small>@mod_dapoli</small><b>↗</b></a>
-            <a class="location-pill" href="https://www.instagram.com/mod_sawarda/" target="_blank" rel="noreferrer"><span>SAWARDA</span><small>@mod_sawarda</small><b>↗</b></a>
-          </div>
-        </div>
+      <div class="hero__dish-meta">
+        <span id="heroLabel">THE CROWD PLEASER</span>
+        <strong id="heroDish">VEG CRUNCHY PIZZA</strong>
+        <small>FRESHLY MADE · MOD</small>
+      </div>
 
-      <p class="cinema-hero__side-note">MADE IN KONKAN · SERVED WITH A MOOD</p>
-    </section>
+      <div class="hero__stamp" aria-hidden="true">
+        <span>FRESH · FAST · FULL OF FLAVOUR ·</span>
+        <b>MOD</b>
+      </div>
 
-    <section class="ticker" aria-label="Menu categories">
-      <div class="ticker__track">
-        <span>BURGERS</span><i>✦</i><span>MOMOS</span><i>✦</i><span>FRIES</span><i>✦</i><span>SANDWICHES</span><i>✦</i><span>SUNDAES</span><i>✦</i><span>SHAKES</span><i>✦</i>
-        <span>BURGERS</span><i>✦</i><span>MOMOS</span><i>✦</i><span>FRIES</span><i>✦</i><span>SANDWICHES</span><i>✦</i><span>SUNDAES</span><i>✦</i><span>SHAKES</span><i>✦</i>
+      <div class="hero__controls" aria-label="Featured dish controls">
+        <button id="heroPrev" type="button" aria-label="Previous dish">←</button>
+        <div class="hero__counter"><strong id="heroIndex">01</strong><span>/ 07</span></div>
+        <div class="hero__progress" aria-hidden="true"><i id="heroProgress"></i></div>
+        <button id="heroPause" type="button" aria-label="Pause automatic slides">Ⅱ</button>
+        <button id="heroNext" type="button" aria-label="Next dish">→</button>
       </div>
     </section>
 
-    <section class="moods section-pad" id="moods" aria-labelledby="moods-title">
-      <div class="section-heading reveal">
-        <p class="kicker"><span></span> YOUR CRAVING, TRANSLATED</p>
-        <h2 id="moods-title">PICK A <em>MOOD.</em></h2>
-        <p>Not a regular menu grid. Start with the feeling, and we will take care of the food.</p>
+    <section class="locations" id="locations" aria-labelledby="locationsTitle">
+      <div class="locations__heading reveal">
+        <p>VISIT OUR</p>
+        <h2 id="locationsTitle">INSTAGRAM PAGES</h2>
+        <span aria-hidden="true"></span>
       </div>
-
-      <div class="mood-selector reveal" role="tablist" aria-label="Select a craving mood">
-        <button class="mood-tab is-active" data-mood="crispy" role="tab" aria-selected="true">
-          <span>01</span><strong>CRISPY</strong><small>crunch first</small>
-        </button>
-        <button class="mood-tab" data-mood="cheesy" role="tab" aria-selected="false">
-          <span>02</span><strong>CHEESY</strong><small>pulls guaranteed</small>
-        </button>
-        <button class="mood-tab" data-mood="spicy" role="tab" aria-selected="false">
-          <span>03</span><strong>SPICY</strong><small>heat with flavour</small>
-        </button>
-        <button class="mood-tab" data-mood="sweet" role="tab" aria-selected="false">
-          <span>04</span><strong>SWEET</strong><small>finish happy</small>
-        </button>
-      </div>
-
-      <div class="mood-stage reveal" id="moodStage">
-        <div class="mood-stage__copy">
-          <p class="mood-stage__number" id="moodNumber">01 / 04</p>
-          <h3 id="moodTitle">CRUNCH<br>MODE</h3>
-          <p id="moodDescription">Golden, layered and seriously satisfying. This is the mood that can be heard from across the table.</p>
-          <div class="mood-stage__meta">
-            <span id="moodDish">VEG CRISPY BURGER</span>
-            <span>MADE FRESH</span>
-          </div>
-        </div>
-        <div class="mood-stage__frame">
-          <img id="moodImage" src="assets/burger.webp" alt="Crispy burger" />
-          <span class="mood-stage__corner">MOD / CHIPLUN</span>
-        </div>
+      <div class="locations__grid">
+        <a class="location-card location-card--featured reveal" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">
+          <span class="location-card__number">01</span>
+          <div><strong>CHIPLUN</strong><small>@mod_chiplun</small></div>
+          <b>↗</b>
+        </a>
+        <a class="location-card reveal" href="https://www.instagram.com/mod_dapoli/" target="_blank" rel="noreferrer">
+          <span class="location-card__number">02</span>
+          <div><strong>DAPOLI</strong><small>@mod_dapoli</small></div>
+          <b>↗</b>
+        </a>
+        <a class="location-card reveal" href="https://www.instagram.com/mod_sawarda/" target="_blank" rel="noreferrer">
+          <span class="location-card__number">03</span>
+          <div><strong>SAWARDA</strong><small>@mod_sawarda</small></div>
+          <b>↗</b>
+        </a>
       </div>
     </section>
 
-    <section class="manifesto">
-      <div class="manifesto__line reveal"><span>NO BORING BITES.</span><span class="outline">NO BORING BITES.</span></div>
-      <div class="manifesto__inner section-pad">
-        <p class="manifesto__index">02 / THE MOD WAY</p>
-        <h2 class="reveal">SAVOURY WHEN YOU'RE HUNGRY.<br><em>SWEET WHEN YOU'RE NOT.</em></h2>
-        <p class="manifesto__body reveal">From a steaming plate of momos to a loaded sundae, MOD is built around one simple idea: cravings do not follow categories.</p>
-      </div>
-    </section>
-
-    <section class="favourites section-pad" id="favourites" aria-labelledby="favourites-title">
-      <div class="favourites__head reveal">
+    <section class="mood-picker" id="moods" aria-labelledby="moodTitle">
+      <div class="mood-picker__top reveal">
         <div>
-          <p class="kicker"><span></span> HOUSE FAVOURITES</p>
-          <h2 id="favourites-title">THE ONES PEOPLE<br>COME BACK FOR.</h2>
+          <p>PICK YOUR VIBE</p>
+          <h2 id="moodTitle">CHOOSE YOUR <em>MOOD</em></h2>
         </div>
-        <p>Swipe on mobile or drag with your mouse. Each plate has its own little personality.</p>
+        <blockquote>Food for every mood.<br />Made for every you.</blockquote>
+      </div>
+      <div class="mood-tabs" role="tablist" aria-label="Filter menu by mood">
+        <button class="is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+        <button type="button" role="tab" aria-selected="false" data-filter="crispy">✦ Crispy</button>
+        <button type="button" role="tab" aria-selected="false" data-filter="cheesy">◒ Cheesy</button>
+        <button type="button" role="tab" aria-selected="false" data-filter="steamy">≋ Steamy</button>
+        <button type="button" role="tab" aria-selected="false" data-filter="spicy">⌁ Spicy</button>
+        <button type="button" role="tab" aria-selected="false" data-filter="sweet">● Sweet</button>
+        <button type="button" role="tab" aria-selected="false" data-filter="chilled">❄ Chilled</button>
+      </div>
+    </section>
+
+    <section class="signature" id="menu" aria-labelledby="signatureTitle">
+      <div class="signature__texture" aria-hidden="true"></div>
+      <div class="signature__intro reveal">
+        <p>OUR BESTSELLERS</p>
+        <h2 id="signatureTitle">SIGNATURE<br /><em>DISHES</em></h2>
+        <span>From cheesy classics to spicy favourites — handpicked moods our guests keep coming back for.</span>
+        <a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">View latest menu ↗</a>
       </div>
 
-      <div class="dish-rail" id="dishRail">
-        <article class="dish-card dish-card--tall">
-          <div class="dish-card__image"><img src="assets/sandwich.webp" alt="Paneer cheese grilled sandwich" /></div>
-          <div class="dish-card__body"><span>01</span><h3>PANEER CHEESE<br>SANDWICH</h3><p>Smoky paneer, molten cheese, golden grill.</p></div>
+      <div class="dish-grid" id="dishGrid">
+        <article class="dish-card dish-card--large reveal" data-category="crispy">
+          <img src="assets/burger.webp" alt="Veg crispy burger" loading="lazy" />
+          <div><small>CRISPY / 01</small><h3>VEG CRISPY<br /><em>BURGER</em></h3><p>Golden crust. Fresh stack. Full satisfaction.</p></div>
         </article>
-        <article class="dish-card dish-card--offset">
-          <div class="dish-card__image"><img src="assets/momos.webp" alt="Steamed momos with red chutney" /></div>
-          <div class="dish-card__body"><span>02</span><h3>STEAMED<br>MOMOS</h3><p>Soft folds, hot filling, fiery chutney.</p></div>
+        <article class="dish-card dish-card--tall reveal" data-category="cheesy">
+          <img src="assets/sandwich.webp" alt="Paneer cheese grilled sandwich" loading="lazy" />
+          <div><small>CHEESY / 02</small><h3>PANEER GRILLED<br /><em>SANDWICH</em></h3><p>Toasted outside. Melty inside.</p></div>
         </article>
-        <article class="dish-card dish-card--tall">
-          <div class="dish-card__image"><img src="assets/fries.webp" alt="Peri peri mayonnaise fries" /></div>
-          <div class="dish-card__body"><span>03</span><h3>PERI PERI<br>MAYO FRIES</h3><p>Spiced, saucy and impossible to share.</p></div>
+        <article class="dish-card reveal" data-category="steamy">
+          <img src="assets/momos.webp" alt="Steamy momos" loading="lazy" />
+          <div><small>STEAMY / 03</small><h3>STEAMED<br /><em>MOMOS</em></h3></div>
         </article>
-        <article class="dish-card dish-card--offset">
-          <div class="dish-card__image"><img src="assets/sundae.webp" alt="KitKat chocolate sundae" /></div>
-          <div class="dish-card__body"><span>04</span><h3>KITKAT<br>SUNDAE</h3><p>Vanilla, chocolate drizzle and KitKat crunch.</p></div>
+        <article class="dish-card reveal" data-category="spicy crispy">
+          <img src="assets/fries.webp" alt="Peri peri mayo fries" loading="lazy" />
+          <div><small>SPICY / 04</small><h3>PERI PERI<br /><em>MAYO FRIES</em></h3></div>
         </article>
-        <article class="dish-card dish-card--tall">
-          <div class="dish-card__image"><img src="assets/shake.webp" alt="Chocolate brownie shake" /></div>
-          <div class="dish-card__body"><span>05</span><h3>BROWNIE<br>SHAKE</h3><p>Rich fudge, dark chocolate, full indulgence.</p></div>
+        <article class="dish-card dish-card--wide reveal" data-category="crispy cheesy">
+          <img src="assets/pizza.webp" alt="Veg crunchy pizza" loading="lazy" />
+          <div><small>LOADED / 05</small><h3>VEG CRUNCHY<br /><em>PIZZA</em></h3><p>Every bite has a crunch you can hear.</p></div>
         </article>
       </div>
     </section>
 
-    <section class="split-story section-pad">
-      <div class="split-story__image reveal">
-        <img src="assets/momos.webp" alt="Fresh hot momos" />
-        <span>STEAMY / SOFT / FULL OF FLAVOUR</span>
+    <section class="sweet-stage" aria-labelledby="sweetTitle">
+      <div class="sweet-stage__intro reveal">
+        <p>SWEET &amp; CHILLED</p>
+        <h2 id="sweetTitle">MOODS</h2>
+        <span>Because every meal deserves a perfect finish.</span>
       </div>
-      <div class="split-story__copy reveal">
-        <p class="split-story__index">03 / FROM STEAM TO SWIRL</p>
-        <h2>ONE TABLE.<br><em>TWO VERY DIFFERENT MOODS.</em></h2>
-        <p>Bring the group. One person can order momos, another can order a shake, and nobody has to compromise.</p>
-        <div class="split-story__mini">
-          <img src="assets/shake.webp" alt="Chocolate shake" />
-          <div><strong>SWEET ENDING?</strong><span>Always a good idea.</span></div>
+
+      <article class="feature-card feature-card--sundae reveal">
+        <img src="assets/sundae.webp" alt="KitKat chocolate sundae" loading="lazy" />
+        <div><small>SWEET / 06</small><h3>KITKAT<br />SUNDAE</h3><p>Creamy vanilla, chocolate drizzle and KitKat magic.</p><a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer" aria-label="See KitKat Sundae on Instagram">↗</a></div>
+      </article>
+
+      <article class="feature-card feature-card--mojito reveal">
+        <img src="assets/mojito.webp" alt="Blue Lagoon mojito" loading="lazy" />
+        <div><small>CHILLED / 07</small><h3>BLUE LAGOON<br />MOJITO</h3><p>Fresh. Fizzy. Refreshing. The chill you need.</p><a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer" aria-label="See Blue Lagoon Mojito on Instagram">↗</a></div>
+      </article>
+    </section>
+
+    <section class="about" id="about" aria-labelledby="aboutTitle">
+      <div class="about__visual reveal">
+        <img src="assets/shake.webp" alt="Brownie chocolate shake" loading="lazy" />
+        <span>MADE IN CHIPLUN<br />SERVED WITH A MOOD</span>
+      </div>
+      <div class="about__copy reveal">
+        <p>MORE THAN A DESSERT PLACE</p>
+        <h2 id="aboutTitle">ONE MENU.<br /><em>EVERY MOOD.</em></h2>
+        <p>MOD brings savoury favourites, loaded snacks, cold drinks and desserts into one playful menu — made for quick catch-ups, rainy cravings and the “let's order something” moment.</p>
+        <div class="about__facts">
+          <span><b>03</b><small>Locations</small></span>
+          <span><b>07</b><small>Moods</small></span>
+          <span><b>∞</b><small>Cravings</small></span>
         </div>
       </div>
     </section>
 
-    <section class="visit" id="visit" aria-labelledby="visit-title">
-      <div class="visit__copy section-pad reveal">
-        <p class="kicker kicker--light"><span></span> FIND YOUR NEXT MOOD</p>
-        <h2 id="visit-title">FIND YOUR<br>NEAREST MOD.</h2>
-        <p>Choose your location for the latest menu, offers and ordering details directly on Instagram.</p>
-        <div class="visit__locations">
-          <a class="visit__button magnetic" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer"><span>CHIPLUN</span><span>↗</span></a>
-          <a class="visit__button magnetic" href="https://www.instagram.com/mod_dapoli/" target="_blank" rel="noreferrer"><span>DAPOLI</span><span>↗</span></a>
-          <a class="visit__button magnetic" href="https://www.instagram.com/mod_sawarda/" target="_blank" rel="noreferrer"><span>SAWARDA</span><span>↗</span></a>
-        </div>
+    <section class="final-cta">
+      <div class="final-cta__mark" aria-hidden="true"><img src="assets/logo-transparent.png" alt="" /></div>
+      <div class="final-cta__copy reveal">
+        <p>YOUR NEXT CRAVING IS ONE DM AWAY</p>
+        <h2>CRAVING SOMETHING <em>AMAZING?</em></h2>
       </div>
-      <div class="visit__visual reveal">
-        <img src="assets/sundae.webp" alt="Chocolate KitKat sundae" />
-        <div class="visit__seal"><span>ONE PLACE</span><strong>EVERY<br>MOOD</strong></div>
-      </div>
+      <a class="button button--orange reveal" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">Order on Instagram <span>↗</span></a>
     </section>
   </main>
 
   <footer class="footer">
-    <a class="footer__logo" href="#top"><img src="assets/logo.webp" alt="Moods of Desserts" /></a>
-    <p>BURGERS · MOMOS · FRIES · SANDWICHES · SUNDAES · SHAKES</p>
-    <div><span>CHIPLUN · DAPOLI · SAWARDA</span><a href="#locations">CHOOSE A LOCATION ↑</a></div>
-    <small>DEMO WEBSITE CONCEPT — CONTENT BASED ON THE BUSINESS' PUBLIC INSTAGRAM CREATIVE.</small>
+    <div class="footer__brand">
+      <img src="assets/logo-transparent.png" alt="Moods of Desserts" />
+      <p>Made with appetite in Chiplun.<br />Serving moods. Creating memories.</p>
+    </div>
+    <div>
+      <h3>QUICK LINKS</h3>
+      <a href="#home">Home</a><a href="#menu">Our menu</a><a href="#moods">Our moods</a><a href="#about">About MOD</a>
+    </div>
+    <div>
+      <h3>INSTAGRAM PAGES</h3>
+      <a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">MOD Chiplun ↗</a>
+      <a href="https://www.instagram.com/mod_dapoli/" target="_blank" rel="noreferrer">MOD Dapoli ↗</a>
+      <a href="https://www.instagram.com/mod_sawarda/" target="_blank" rel="noreferrer">MOD Sawarda ↗</a>
+    </div>
+    <div>
+      <h3>VISIT US</h3>
+      <p>Chiplun, Maharashtra</p>
+      <a class="footer__direction" href="https://www.google.com/maps/search/?api=1&query=Moods+of+Desserts+Chiplun" target="_blank" rel="noreferrer">Get directions ↗</a>
+    </div>
+    <small class="footer__copyright">© 2026 MOD — Moods of Desserts. Demo website concept.</small>
   </footer>
 
-  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,422 +1,319 @@
-const body = document.body;
-const loader = document.getElementById('loader');
-const loaderCount = document.getElementById('loaderCount');
-const loaderProgress = document.getElementById('loaderProgress');
-const loaderWords = document.getElementById('loaderWords');
-const loaderBar = document.getElementById('loaderBar');
-const loaderOrbit = document.getElementById('loaderOrbit');
-const loaderStatus = document.getElementById('loaderStatus');
-const params = new URLSearchParams(window.location.search);
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const shouldSkipLoader = params.has('skipLoader');
+(() => {
+  'use strict';
 
-function removeLoaderImmediately() {
-  loader?.remove();
-  body.classList.remove('is-locked');
-  body.classList.add('site-ready');
-}
+  const doc = document;
+  const body = doc.body;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function startLoader() {
-  if (!loader || !loaderCount || !loaderProgress || !loaderWords || !loaderBar) {
-    removeLoaderImmediately();
-    return;
+  /* -------------------------------------------------
+     Loader — simulated motion tied to critical assets.
+     It has a hard safety exit, so it can never trap users.
+  -------------------------------------------------- */
+  const preloader = doc.getElementById('preloader');
+  const loaderWords = doc.getElementById('loaderWords');
+  const loaderBar = doc.getElementById('loaderBar');
+  const loaderCount = doc.getElementById('loaderCount');
+  const loaderStatus = doc.getElementById('loaderStatus');
+
+  function criticalAssetPromise(src) {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.onload = resolve;
+      image.onerror = resolve;
+      image.src = src;
+      if (image.complete) resolve();
+    });
   }
 
-  if (shouldSkipLoader) {
-    removeLoaderImmediately();
-    return;
-  }
-
-  body.classList.add('is-locked');
-
-  const minDuration = reducedMotion ? 500 : 2600;
-  const maxDuration = reducedMotion ? 800 : 5200;
-  const circumference = 2 * Math.PI * 96;
-  const startedAt = performance.now();
-  const images = Array.from(document.images);
-  let loadedAssets = images.filter(image => image.complete).length;
-  let displayedProgress = 0;
-  let lastWordIndex = -1;
-  let finished = false;
-
-  images.forEach(image => {
-    if (image.complete) return;
-    const markComplete = () => {
-      loadedAssets += 1;
-    };
-    image.addEventListener('load', markComplete, { once: true });
-    image.addEventListener('error', markComplete, { once: true });
-  });
-
-  const statusMessages = [
-    'One place. Every mood.',
-    'Melting the cheese.',
-    'Turning up the heat.',
-    'Finishing with something sweet.',
-    'Your mood is ready.'
-  ];
-
-  function paint(progress) {
-    const safeProgress = Math.max(0, Math.min(progress, 1));
-    const percent = Math.round(safeProgress * 100);
-    loaderCount.textContent = `${String(percent).padStart(2, '0')}%`;
-    loaderProgress.style.strokeDashoffset = String(circumference * (1 - safeProgress));
-    loaderBar.style.width = `${safeProgress * 100}%`;
-
-    if (loaderOrbit) {
-      loaderOrbit.style.transform = `rotate(${safeProgress * 430}deg)`;
-    }
-
-    const wordIndex = Math.min(4, Math.floor(safeProgress * 4.25));
-    if (wordIndex !== lastWordIndex) {
-      const firstWord = loaderWords.querySelector('span');
-      const wordHeight = firstWord?.getBoundingClientRect().height || 128;
-      loaderWords.style.transform = `translateY(-${wordIndex * wordHeight}px)`;
-      if (loaderStatus) loaderStatus.textContent = statusMessages[wordIndex];
-      lastWordIndex = wordIndex;
-    }
-  }
-
-  function completeLoader() {
-    if (finished) return;
-    finished = true;
-    paint(1);
-    loader.classList.add('is-complete');
-
-    window.setTimeout(() => {
-      loader.classList.add('is-exiting');
-      body.classList.remove('is-locked');
+  function startLoader() {
+    const skipLoader = new URLSearchParams(window.location.search).has('skipLoader');
+    if (skipLoader) {
+      preloader?.setAttribute('aria-hidden', 'true');
+      body.classList.remove('is-loading');
       body.classList.add('site-ready');
-
-      window.setTimeout(() => {
-        loader.classList.add('is-gone');
-        loader.setAttribute('aria-hidden', 'true');
-      }, reducedMotion ? 40 : 1100);
-    }, reducedMotion ? 80 : 360);
-  }
-
-  function tick(now) {
-    const elapsed = now - startedAt;
-    const assetRatio = images.length ? loadedAssets / images.length : 1;
-    let targetProgress;
-
-    if (elapsed < minDuration) {
-      const timeRatio = elapsed / minDuration;
-      targetProgress = Math.min(0.9, timeRatio * 0.79 + assetRatio * 0.13);
-    } else if (assetRatio >= 1) {
-      targetProgress = 1;
-    } else {
-      const overtimeRatio = Math.min((elapsed - minDuration) / Math.max(maxDuration - minDuration, 1), 1);
-      targetProgress = 0.9 + overtimeRatio * 0.1;
+      return;
     }
-
-    if (elapsed >= maxDuration) targetProgress = 1;
-
-    displayedProgress += (targetProgress - displayedProgress) * (reducedMotion ? 0.5 : 0.095);
-    if (targetProgress === 1 && displayedProgress > 0.992) displayedProgress = 1;
-    paint(displayedProgress);
-
-    if (displayedProgress >= 1) {
-      completeLoader();
+    if (!preloader || !loaderWords || !loaderBar || !loaderCount) {
+      body.classList.remove('is-loading');
       return;
     }
 
-    requestAnimationFrame(tick);
+    const minDuration = reducedMotion ? 500 : 2450;
+    const maxDuration = reducedMotion ? 900 : 4700;
+    const started = performance.now();
+    let criticalReady = false;
+    let displayed = 0;
+    let finished = false;
+    let lastWord = -1;
+
+    Promise.all([
+      criticalAssetPromise('assets/logo-transparent.png'),
+      criticalAssetPromise('assets/pizza.webp'),
+      criticalAssetPromise('assets/burger.webp')
+    ]).then(() => { criticalReady = true; });
+
+    const statuses = [
+      'Warming up the grill.',
+      'Melting the cheese.',
+      'Adding a little heat.',
+      'Finishing with something sweet.',
+      'Your mood is ready.'
+    ];
+
+    function paint(value) {
+      const progress = Math.max(0, Math.min(value, 1));
+      const percent = Math.round(progress * 100);
+      loaderBar.style.width = `${percent}%`;
+      loaderCount.textContent = String(percent).padStart(2, '0');
+
+      const index = Math.min(4, Math.floor(progress * 4.3));
+      if (index !== lastWord) {
+        const word = loaderWords.querySelector('span');
+        const wordHeight = word?.getBoundingClientRect().height || 100;
+        loaderWords.style.transform = `translate3d(0, -${index * wordHeight}px, 0)`;
+        if (loaderStatus) loaderStatus.textContent = statuses[index];
+        lastWord = index;
+      }
+    }
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      paint(1);
+      preloader.classList.add('is-complete');
+
+      window.setTimeout(() => {
+        preloader.classList.add('is-exiting');
+        body.classList.remove('is-loading');
+        body.classList.add('site-ready');
+
+        window.setTimeout(() => {
+          preloader.setAttribute('aria-hidden', 'true');
+        }, reducedMotion ? 50 : 1250);
+      }, reducedMotion ? 60 : 320);
+    }
+
+    function frame(now) {
+      if (finished) return;
+      const elapsed = now - started;
+      const timeRatio = Math.min(elapsed / minDuration, 1);
+      let target = timeRatio * 0.88;
+
+      if (elapsed >= minDuration) {
+        target = criticalReady ? 1 : 0.92 + Math.min((elapsed - minDuration) / 1500, 1) * 0.08;
+      }
+      if (elapsed >= maxDuration) target = 1;
+
+      displayed += (target - displayed) * (reducedMotion ? 0.42 : 0.085);
+      if (target === 1 && displayed > 0.992) displayed = 1;
+      paint(displayed);
+
+      if (displayed >= 1) finish();
+      else requestAnimationFrame(frame);
+    }
+
+    paint(0);
+    requestAnimationFrame(frame);
+    window.setTimeout(finish, maxDuration + 900);
   }
 
-  paint(0);
-  requestAnimationFrame(tick);
+  startLoader();
 
-  // Safety exit: a failed image or browser event can never trap the visitor.
-  window.setTimeout(completeLoader, maxDuration + 1400);
-}
+  /* -------------------------------------------------
+     Navigation
+  -------------------------------------------------- */
+  const header = doc.querySelector('.site-header');
+  const menuToggle = doc.getElementById('menuToggle');
+  const mobileMenu = doc.getElementById('mobileMenu');
 
-startLoader();
-
-const menuToggle = document.getElementById('menuToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-menuToggle?.addEventListener('click', () => {
-  const open = menuToggle.getAttribute('aria-expanded') === 'true';
-  menuToggle.setAttribute('aria-expanded', String(!open));
-  mobileMenu.classList.toggle('is-open', !open);
-  mobileMenu.setAttribute('aria-hidden', String(open));
-});
-mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-  menuToggle.setAttribute('aria-expanded', 'false');
-  mobileMenu.classList.remove('is-open');
-  mobileMenu.setAttribute('aria-hidden', 'true');
-}));
-
-// Cinematic hero carousel: automatic mood changes with accessible manual controls.
-const cinemaHero = document.querySelector('.cinema-hero');
-const heroVisual = document.getElementById('heroVisual');
-const heroSlides = Array.from(document.querySelectorAll('.cinema-slide'));
-const heroMoodWord = document.getElementById('heroMoodWord');
-const heroDescription = document.getElementById('heroDescription');
-const heroDishName = document.getElementById('heroDishName');
-const heroSlideNumber = document.getElementById('heroSlideNumber');
-const heroDishCard = document.querySelector('.cinema-hero__dish-card');
-const heroDynamic = document.querySelector('.cinema-hero__dynamic');
-const heroDots = document.getElementById('heroDots');
-const heroPrev = document.getElementById('heroPrev');
-const heroNext = document.getElementById('heroNext');
-
-let heroIndex = 0;
-let heroTimer = null;
-let heroStarted = false;
-let heroPaused = false;
-let heroChanging = false;
-const heroInterval = reducedMotion ? 8000 : 5600;
-
-function restartHeroProgress() {
-  if (!heroVisual || heroPaused) return;
-  heroVisual.classList.remove('is-running');
-  // Reading offsetWidth reliably restarts the CSS progress animation.
-  void heroVisual.offsetWidth;
-  heroVisual.classList.add('is-running');
-}
-
-function scheduleHero() {
-  window.clearTimeout(heroTimer);
-  if (!heroStarted || heroPaused || heroSlides.length < 2) return;
-  restartHeroProgress();
-  heroTimer = window.setTimeout(() => showHeroSlide(heroIndex + 1), heroInterval);
-}
-
-function updateHeroDots() {
-  heroDots?.querySelectorAll('button').forEach((dot, index) => {
-    const active = index === heroIndex;
-    dot.classList.toggle('is-active', active);
-    dot.setAttribute('aria-current', active ? 'true' : 'false');
-  });
-}
-
-function showHeroSlide(nextIndex, immediate = false) {
-  if (!heroSlides.length || heroChanging) return;
-  const normalized = (nextIndex + heroSlides.length) % heroSlides.length;
-  if (normalized === heroIndex && !immediate) {
-    scheduleHero();
-    return;
+  function setMenu(open) {
+    if (!menuToggle || !mobileMenu) return;
+    menuToggle.setAttribute('aria-expanded', String(open));
+    mobileMenu.classList.toggle('is-open', open);
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    body.style.overflow = open ? 'hidden' : '';
   }
 
-  heroChanging = true;
-  window.clearTimeout(heroTimer);
-
-  const nextSlide = heroSlides[normalized];
-  const swapDelay = immediate || reducedMotion ? 0 : 210;
-
-  heroDynamic?.classList.add('is-updating');
-  heroDescription?.classList.add('is-updating');
-  heroDishCard?.classList.add('is-updating');
-
-  window.setTimeout(() => {
-    heroSlides[heroIndex]?.classList.remove('is-active');
-    nextSlide.classList.add('is-active');
-    heroIndex = normalized;
-
-    const mood = nextSlide.dataset.mood || '';
-    const dish = nextSlide.dataset.dish || '';
-    const description = nextSlide.dataset.description || '';
-    const accent = nextSlide.dataset.accent || '#f39a35';
-
-    if (heroMoodWord) heroMoodWord.textContent = mood;
-    if (heroDescription) heroDescription.textContent = description;
-    if (heroDishName) heroDishName.textContent = dish;
-    if (heroSlideNumber) heroSlideNumber.textContent = `${String(heroIndex + 1).padStart(2, '0')} / ${String(heroSlides.length).padStart(2, '0')}`;
-    cinemaHero?.style.setProperty('--hero-accent', accent);
-    updateHeroDots();
-
-    requestAnimationFrame(() => {
-      heroDynamic?.classList.remove('is-updating');
-      heroDescription?.classList.remove('is-updating');
-      heroDishCard?.classList.remove('is-updating');
-      heroChanging = false;
-      scheduleHero();
-    });
-  }, swapDelay);
-}
-
-if (heroDots && heroSlides.length) {
-  heroSlides.forEach((slide, index) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.setAttribute('aria-label', `Show ${slide.dataset.dish || `dish ${index + 1}`}`);
-    button.addEventListener('click', () => showHeroSlide(index));
-    heroDots.appendChild(button);
+  menuToggle?.addEventListener('click', () => {
+    setMenu(menuToggle.getAttribute('aria-expanded') !== 'true');
   });
-  updateHeroDots();
-}
 
-heroPrev?.addEventListener('click', () => showHeroSlide(heroIndex - 1));
-heroNext?.addEventListener('click', () => showHeroSlide(heroIndex + 1));
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => setMenu(false));
+  });
 
-function pauseHero() {
-  heroPaused = true;
-  window.clearTimeout(heroTimer);
-  heroVisual?.classList.remove('is-running');
-}
+  window.addEventListener('scroll', () => {
+    header?.classList.toggle('is-scrolled', window.scrollY > 24);
+  }, { passive: true });
 
-function resumeHero() {
-  heroPaused = false;
-  scheduleHero();
-}
+  /* -------------------------------------------------
+     Cinematic hero carousel
+  -------------------------------------------------- */
+  const hero = doc.querySelector('.hero');
+  const slides = Array.from(doc.querySelectorAll('.hero-slide'));
+  const backdrops = Array.from(doc.querySelectorAll('.hero-backdrop'));
+  const heroMood = doc.getElementById('heroMood');
+  const heroCopy = doc.getElementById('heroCopy');
+  const heroDish = doc.getElementById('heroDish');
+  const heroLabel = doc.getElementById('heroLabel');
+  const heroIndex = doc.getElementById('heroIndex');
+  const heroPrev = doc.getElementById('heroPrev');
+  const heroNext = doc.getElementById('heroNext');
+  const heroPause = doc.getElementById('heroPause');
+  const heroMedia = doc.getElementById('heroMedia');
 
-heroVisual?.addEventListener('mouseenter', pauseHero);
-heroVisual?.addEventListener('mouseleave', resumeHero);
-heroVisual?.addEventListener('focusin', pauseHero);
-heroVisual?.addEventListener('focusout', (event) => {
-  if (!heroVisual.contains(event.relatedTarget)) resumeHero();
-});
+  let currentSlide = 0;
+  let heroTimer = null;
+  let paused = false;
+  let changing = false;
+  const interval = reducedMotion ? 8500 : 5800;
 
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) pauseHero();
-  else resumeHero();
-});
+  slides.forEach(slide => {
+    slide.style.setProperty('--position', slide.dataset.position || '68% 50%');
+    slide.style.setProperty('--mobile-position', slide.dataset.mobilePosition || '60% 50%');
+  });
 
-function startHeroAutoplay() {
-  if (heroStarted || !heroSlides.length) return;
-  heroStarted = true;
-  scheduleHero();
-}
+  function restartProgress() {
+    if (!hero || paused) return;
+    hero.classList.remove('is-running');
+    void hero.offsetWidth;
+    hero.classList.add('is-running');
+  }
 
-if (body.classList.contains('site-ready')) {
-  startHeroAutoplay();
-} else {
-  const readyObserver = new MutationObserver(() => {
-    if (body.classList.contains('site-ready')) {
-      readyObserver.disconnect();
-      startHeroAutoplay();
+  function schedule() {
+    window.clearTimeout(heroTimer);
+    if (paused || slides.length < 2) return;
+    restartProgress();
+    heroTimer = window.setTimeout(() => showSlide(currentSlide + 1), interval);
+  }
+
+  function updateText(slide, index) {
+    const accent = slide.dataset.accent || '#f18a1a';
+    hero?.style.setProperty('--hero-accent', accent);
+    if (heroMood) heroMood.textContent = slide.dataset.mood || '';
+    if (heroCopy) heroCopy.textContent = slide.dataset.copy || '';
+    if (heroDish) heroDish.textContent = slide.dataset.title || '';
+    if (heroLabel) heroLabel.textContent = slide.dataset.label || '';
+    if (heroIndex) heroIndex.textContent = String(index + 1).padStart(2, '0');
+  }
+
+  function showSlide(next, immediate = false) {
+    if (!slides.length || changing) return;
+    const normalized = (next + slides.length) % slides.length;
+    if (normalized === currentSlide && !immediate) {
+      schedule();
+      return;
+    }
+
+    changing = true;
+    window.clearTimeout(heroTimer);
+    hero?.classList.add('is-changing');
+
+    const delay = immediate || reducedMotion ? 0 : 260;
+    window.setTimeout(() => {
+      slides[currentSlide]?.classList.remove('is-active');
+      backdrops[currentSlide]?.classList.remove('is-active');
+      slides[normalized]?.classList.add('is-active');
+      backdrops[normalized]?.classList.add('is-active');
+      currentSlide = normalized;
+      updateText(slides[currentSlide], currentSlide);
+
+      requestAnimationFrame(() => {
+        hero?.classList.remove('is-changing');
+        changing = false;
+        schedule();
+      });
+    }, delay);
+  }
+
+  function setPaused(nextState) {
+    paused = nextState;
+    window.clearTimeout(heroTimer);
+    hero?.classList.toggle('is-running', !paused);
+    if (heroPause) {
+      heroPause.textContent = paused ? '▶' : 'Ⅱ';
+      heroPause.setAttribute('aria-label', paused ? 'Resume automatic slides' : 'Pause automatic slides');
+    }
+    if (!paused) schedule();
+  }
+
+  heroPrev?.addEventListener('click', () => showSlide(currentSlide - 1));
+  heroNext?.addEventListener('click', () => showSlide(currentSlide + 1));
+  heroPause?.addEventListener('click', () => setPaused(!paused));
+
+  // Swipe support for phones and tablets.
+  let touchStartX = 0;
+  let touchStartY = 0;
+  heroMedia?.addEventListener('touchstart', event => {
+    const touch = event.changedTouches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }, { passive: true });
+  heroMedia?.addEventListener('touchend', event => {
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) {
+      showSlide(dx < 0 ? currentSlide + 1 : currentSlide - 1);
+    }
+  }, { passive: true });
+
+  doc.addEventListener('visibilitychange', () => {
+    if (doc.hidden) {
+      window.clearTimeout(heroTimer);
+      hero?.classList.remove('is-running');
+    } else if (!paused) {
+      schedule();
     }
   });
-  readyObserver.observe(body, { attributes: true, attributeFilter: ['class'] });
-}
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: .12, rootMargin: '0px 0px -50px' });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-const moods = {
-  crispy: {
-    number: '01 / 04',
-    title: 'CRUNCH<br>MODE',
-    description: 'Golden, layered and seriously satisfying. This is the mood that can be heard from across the table.',
-    dish: 'VEG CRISPY BURGER',
-    image: 'assets/burger.webp',
-    alt: 'Crispy vegetarian burger'
-  },
-  cheesy: {
-    number: '02 / 04',
-    title: 'CHEESE<br>PLEASE',
-    description: 'Toasted edges, a smoky paneer centre and enough molten cheese to turn one bite into a full moment.',
-    dish: 'PANEER CHEESE SANDWICH',
-    image: 'assets/sandwich.webp',
-    alt: 'Paneer cheese grilled sandwich'
-  },
-  spicy: {
-    number: '03 / 04',
-    title: 'HEAT<br>WAVE',
-    description: 'Peri peri dust, creamy mayo and fries that refuse to stay on the table for very long.',
-    dish: 'PERI PERI MAYO FRIES',
-    image: 'assets/fries.webp',
-    alt: 'Peri peri mayonnaise fries'
-  },
-  sweet: {
-    number: '04 / 04',
-    title: 'SWEET<br>ESCAPE',
-    description: 'Cold vanilla, dark chocolate and KitKat crunch — the kind of ending that becomes the main plan.',
-    dish: 'KITKAT SUNDAE',
-    image: 'assets/sundae.webp',
-    alt: 'KitKat chocolate sundae'
+  if (slides.length) {
+    updateText(slides[0], 0);
+    schedule();
   }
-};
 
-const moodStage = document.getElementById('moodStage');
-const moodNumber = document.getElementById('moodNumber');
-const moodTitle = document.getElementById('moodTitle');
-const moodDescription = document.getElementById('moodDescription');
-const moodDish = document.getElementById('moodDish');
-const moodImage = document.getElementById('moodImage');
+  /* -------------------------------------------------
+     Mood filtering
+  -------------------------------------------------- */
+  const moodButtons = Array.from(doc.querySelectorAll('.mood-tabs button'));
+  const dishes = Array.from(doc.querySelectorAll('.dish-card'));
 
-document.querySelectorAll('.mood-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const selected = moods[tab.dataset.mood];
-    if (!selected || tab.classList.contains('is-active')) return;
-    document.querySelectorAll('.mood-tab').forEach(t => {
-      const active = t === tab;
-      t.classList.toggle('is-active', active);
-      t.setAttribute('aria-selected', String(active));
+  moodButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter || 'all';
+      moodButtons.forEach(item => {
+        const active = item === button;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-selected', String(active));
+      });
+
+      dishes.forEach(card => {
+        const categories = (card.dataset.category || '').split(/\s+/);
+        const visible = filter === 'all' || categories.includes(filter);
+        card.classList.toggle('is-filtered-out', !visible);
+      });
     });
-    moodStage.classList.add('is-changing');
-    setTimeout(() => {
-      moodNumber.textContent = selected.number;
-      moodTitle.innerHTML = selected.title;
-      moodDescription.textContent = selected.description;
-      moodDish.textContent = selected.dish;
-      moodImage.src = selected.image;
-      moodImage.alt = selected.alt;
-      requestAnimationFrame(() => moodStage.classList.remove('is-changing'));
-    }, 230);
   });
-});
 
-const rail = document.getElementById('dishRail');
-let isDown = false;
-let railStartX = 0;
-let scrollStart = 0;
-rail?.addEventListener('pointerdown', (event) => {
-  isDown = true;
-  rail.setPointerCapture(event.pointerId);
-  railStartX = event.clientX;
-  scrollStart = rail.scrollLeft;
-});
-rail?.addEventListener('pointermove', (event) => {
-  if (!isDown) return;
-  rail.scrollLeft = scrollStart - (event.clientX - railStartX) * 1.4;
-});
-rail?.addEventListener('pointerup', () => isDown = false);
-rail?.addEventListener('pointercancel', () => isDown = false);
+  /* -------------------------------------------------
+     Reveal-on-scroll — small movement only.
+  -------------------------------------------------- */
+  const revealItems = Array.from(doc.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && !reducedMotion) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
 
-const parallaxTarget = document.querySelector('[data-parallax] img');
-let ticking = false;
-function updateParallax() {
-  if (parallaxTarget && window.innerWidth > 760) {
-    const amount = Math.min(window.scrollY * 0.035, 45);
-    parallaxTarget.style.transform = `translateY(${amount}px) scale(1.05)`;
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
+      observer.observe(item);
+    });
+  } else {
+    revealItems.forEach(item => item.classList.add('is-visible'));
   }
-  ticking = false;
-}
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(updateParallax);
-    ticking = true;
-  }
-}, { passive: true });
-
-const cursor = document.getElementById('cursorDot');
-if (window.matchMedia('(pointer:fine)').matches) {
-  window.addEventListener('pointermove', (e) => {
-    cursor.style.opacity = '1';
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-  });
-  document.querySelectorAll('a, button, .dish-card').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('is-active'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('is-active'));
-  });
-}
-
-// Small magnetic pull on primary CTAs.
-document.querySelectorAll('.magnetic').forEach(button => {
-  button.addEventListener('pointermove', (event) => {
-    const rect = button.getBoundingClientRect();
-    const x = event.clientX - rect.left - rect.width / 2;
-    const y = event.clientY - rect.top - rect.height / 2;
-    button.style.transform = `translate(${x * .08}px, ${y * .12}px)`;
-  });
-  button.addEventListener('pointerleave', () => button.style.transform = 'translate(0,0)');
-});
+})();
