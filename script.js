@@ -3,49 +3,134 @@ const loader = document.getElementById('loader');
 const loaderCount = document.getElementById('loaderCount');
 const loaderProgress = document.getElementById('loaderProgress');
 const loaderWords = document.getElementById('loaderWords');
-const scoop = document.querySelector('.loader__scoop');
-const params = new URLSearchParams(location.search);
-const shouldSkipLoader = params.has('skipLoader') || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const loaderBar = document.getElementById('loaderBar');
+const loaderOrbit = document.getElementById('loaderOrbit');
+const loaderStatus = document.getElementById('loaderStatus');
+const params = new URLSearchParams(window.location.search);
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const shouldSkipLoader = params.has('skipLoader');
+
+function removeLoaderImmediately() {
+  loader?.remove();
+  body.classList.remove('is-locked');
+  body.classList.add('site-ready');
+}
 
 function startLoader() {
+  if (!loader || !loaderCount || !loaderProgress || !loaderWords || !loaderBar) {
+    removeLoaderImmediately();
+    return;
+  }
+
   if (shouldSkipLoader) {
-    loader?.remove();
-    body.classList.remove('is-locked');
+    removeLoaderImmediately();
     return;
   }
 
   body.classList.add('is-locked');
-  const duration = 2500;
-  const start = performance.now();
-  const circumference = 572;
-  let lastWord = -1;
 
-  function tick(now) {
-    const raw = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - raw, 3);
-    const percent = Math.floor(eased * 100);
-    loaderCount.textContent = String(percent).padStart(2, '0');
-    loaderProgress.style.strokeDashoffset = circumference * (1 - eased);
-    scoop.style.transform = `rotate(${eased * 360}deg)`;
+  const minDuration = reducedMotion ? 500 : 2600;
+  const maxDuration = reducedMotion ? 800 : 5200;
+  const circumference = 2 * Math.PI * 96;
+  const startedAt = performance.now();
+  const images = Array.from(document.images);
+  let loadedAssets = images.filter(image => image.complete).length;
+  let displayedProgress = 0;
+  let lastWordIndex = -1;
+  let finished = false;
 
-    const wordIndex = Math.min(4, Math.floor(raw * 4.35));
-    if (wordIndex !== lastWord) {
-      loaderWords.style.transform = `translateY(-${wordIndex * 59}px)`;
-      lastWord = wordIndex;
+  images.forEach(image => {
+    if (image.complete) return;
+    const markComplete = () => {
+      loadedAssets += 1;
+    };
+    image.addEventListener('load', markComplete, { once: true });
+    image.addEventListener('error', markComplete, { once: true });
+  });
+
+  const statusMessages = [
+    'One place. Every mood.',
+    'Melting the cheese.',
+    'Turning up the heat.',
+    'Finishing with something sweet.',
+    'Your mood is ready.'
+  ];
+
+  function paint(progress) {
+    const safeProgress = Math.max(0, Math.min(progress, 1));
+    const percent = Math.round(safeProgress * 100);
+    loaderCount.textContent = `${String(percent).padStart(2, '0')}%`;
+    loaderProgress.style.strokeDashoffset = String(circumference * (1 - safeProgress));
+    loaderBar.style.width = `${safeProgress * 100}%`;
+
+    if (loaderOrbit) {
+      loaderOrbit.style.transform = `rotate(${safeProgress * 430}deg)`;
     }
 
-    if (raw < 1) {
-      requestAnimationFrame(tick);
-    } else {
-      setTimeout(() => {
-        loader.classList.add('is-exiting');
-        body.classList.remove('is-locked');
-        setTimeout(() => loader.classList.add('is-gone'), 1300);
-      }, 180);
+    const wordIndex = Math.min(4, Math.floor(safeProgress * 4.25));
+    if (wordIndex !== lastWordIndex) {
+      const firstWord = loaderWords.querySelector('span');
+      const wordHeight = firstWord?.getBoundingClientRect().height || 128;
+      loaderWords.style.transform = `translateY(-${wordIndex * wordHeight}px)`;
+      if (loaderStatus) loaderStatus.textContent = statusMessages[wordIndex];
+      lastWordIndex = wordIndex;
     }
   }
+
+  function completeLoader() {
+    if (finished) return;
+    finished = true;
+    paint(1);
+    loader.classList.add('is-complete');
+
+    window.setTimeout(() => {
+      loader.classList.add('is-exiting');
+      body.classList.remove('is-locked');
+      body.classList.add('site-ready');
+
+      window.setTimeout(() => {
+        loader.classList.add('is-gone');
+        loader.setAttribute('aria-hidden', 'true');
+      }, reducedMotion ? 40 : 1100);
+    }, reducedMotion ? 80 : 360);
+  }
+
+  function tick(now) {
+    const elapsed = now - startedAt;
+    const assetRatio = images.length ? loadedAssets / images.length : 1;
+    let targetProgress;
+
+    if (elapsed < minDuration) {
+      const timeRatio = elapsed / minDuration;
+      targetProgress = Math.min(0.9, timeRatio * 0.79 + assetRatio * 0.13);
+    } else if (assetRatio >= 1) {
+      targetProgress = 1;
+    } else {
+      const overtimeRatio = Math.min((elapsed - minDuration) / Math.max(maxDuration - minDuration, 1), 1);
+      targetProgress = 0.9 + overtimeRatio * 0.1;
+    }
+
+    if (elapsed >= maxDuration) targetProgress = 1;
+
+    displayedProgress += (targetProgress - displayedProgress) * (reducedMotion ? 0.5 : 0.095);
+    if (targetProgress === 1 && displayedProgress > 0.992) displayedProgress = 1;
+    paint(displayedProgress);
+
+    if (displayedProgress >= 1) {
+      completeLoader();
+      return;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  paint(0);
   requestAnimationFrame(tick);
+
+  // Safety exit: a failed image or browser event can never trap the visitor.
+  window.setTimeout(completeLoader, maxDuration + 1400);
 }
+
 startLoader();
 
 const menuToggle = document.getElementById('menuToggle');
