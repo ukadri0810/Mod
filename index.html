@@ -16,35 +16,52 @@
     <div class="noscript">Please enable JavaScript to view this experience.</div>
   </noscript>
 
-  <div class="loader" id="loader" aria-hidden="true">
-    <div class="loader__grain"></div>
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Moods of Desserts">
+    <div class="loader__grain" aria-hidden="true"></div>
+
     <div class="loader__topline">
       <span>MOD / CHIPLUN</span>
-      <span id="loaderCount">00</span>
+      <span>EST. FOR EVERY MOOD</span>
     </div>
 
-    <div class="loader__stage">
-      <p class="loader__eyebrow">TUNING YOUR CRAVING</p>
+    <div class="loader__experience">
+      <div class="loader__copy">
+        <p class="loader__eyebrow">PREPARING YOUR NEXT CRAVING</p>
+        <div class="loader__word-window" aria-hidden="true">
+          <div class="loader__words" id="loaderWords">
+            <span>CRISPY.</span>
+            <span>CHEESY.</span>
+            <span>SPICY.</span>
+            <span>SWEET.</span>
+            <span>READY.</span>
+          </div>
+        </div>
+        <p class="loader__sub" id="loaderStatus">One place. Every mood.</p>
+      </div>
+
       <div class="loader__dial" aria-hidden="true">
-        <svg viewBox="0 0 220 220" role="presentation">
-          <circle class="loader__track" cx="110" cy="110" r="91"></circle>
-          <circle class="loader__progress" id="loaderProgress" cx="110" cy="110" r="91"></circle>
+        <svg viewBox="0 0 240 240" role="presentation">
+          <circle class="loader__track" cx="120" cy="120" r="96"></circle>
+          <circle class="loader__progress" id="loaderProgress" cx="120" cy="120" r="96"></circle>
         </svg>
-        <div class="loader__logo-wrap">
-          <img src="assets/logo.webp" alt="" />
+        <span class="loader__orbit" id="loaderOrbit"></span>
+        <div class="loader__logo-shell">
+          <div class="loader__logo-wrap">
+            <img src="assets/logo.webp" alt="" />
+          </div>
         </div>
-        <span class="loader__scoop"></span>
+        <span class="loader__mood loader__mood--one">CRUNCH</span>
+        <span class="loader__mood loader__mood--two">MELT</span>
+        <span class="loader__mood loader__mood--three">HEAT</span>
+        <span class="loader__mood loader__mood--four">SWEET</span>
       </div>
-      <div class="loader__word-window" aria-hidden="true">
-        <div class="loader__words" id="loaderWords">
-          <span>CRISPY</span><span>CHEESY</span><span>SPICY</span><span>SWEET</span><span>CRISPY</span>
-        </div>
-      </div>
-      <p class="loader__sub">One place. Every mood.</p>
     </div>
 
-    <div class="loader__curtain loader__curtain--left"></div>
-    <div class="loader__curtain loader__curtain--right"></div>
+    <div class="loader__footer">
+      <span class="loader__footer-label">LOADING THE MENU</span>
+      <div class="loader__bar" aria-hidden="true"><span id="loaderBar"></span></div>
+      <span class="loader__count" id="loaderCount">00%</span>
+    </div>
   </div>
 
   <header class="site-header" id="top">
