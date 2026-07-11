@@ -147,6 +147,150 @@ mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click',
   mobileMenu.setAttribute('aria-hidden', 'true');
 }));
 
+// Cinematic hero carousel: automatic mood changes with accessible manual controls.
+const cinemaHero = document.querySelector('.cinema-hero');
+const heroVisual = document.getElementById('heroVisual');
+const heroSlides = Array.from(document.querySelectorAll('.cinema-slide'));
+const heroMoodWord = document.getElementById('heroMoodWord');
+const heroDescription = document.getElementById('heroDescription');
+const heroDishName = document.getElementById('heroDishName');
+const heroSlideNumber = document.getElementById('heroSlideNumber');
+const heroDishCard = document.querySelector('.cinema-hero__dish-card');
+const heroDynamic = document.querySelector('.cinema-hero__dynamic');
+const heroDots = document.getElementById('heroDots');
+const heroPrev = document.getElementById('heroPrev');
+const heroNext = document.getElementById('heroNext');
+
+let heroIndex = 0;
+let heroTimer = null;
+let heroStarted = false;
+let heroPaused = false;
+let heroChanging = false;
+const heroInterval = reducedMotion ? 8000 : 5600;
+
+function restartHeroProgress() {
+  if (!heroVisual || heroPaused) return;
+  heroVisual.classList.remove('is-running');
+  // Reading offsetWidth reliably restarts the CSS progress animation.
+  void heroVisual.offsetWidth;
+  heroVisual.classList.add('is-running');
+}
+
+function scheduleHero() {
+  window.clearTimeout(heroTimer);
+  if (!heroStarted || heroPaused || heroSlides.length < 2) return;
+  restartHeroProgress();
+  heroTimer = window.setTimeout(() => showHeroSlide(heroIndex + 1), heroInterval);
+}
+
+function updateHeroDots() {
+  heroDots?.querySelectorAll('button').forEach((dot, index) => {
+    const active = index === heroIndex;
+    dot.classList.toggle('is-active', active);
+    dot.setAttribute('aria-current', active ? 'true' : 'false');
+  });
+}
+
+function showHeroSlide(nextIndex, immediate = false) {
+  if (!heroSlides.length || heroChanging) return;
+  const normalized = (nextIndex + heroSlides.length) % heroSlides.length;
+  if (normalized === heroIndex && !immediate) {
+    scheduleHero();
+    return;
+  }
+
+  heroChanging = true;
+  window.clearTimeout(heroTimer);
+
+  const nextSlide = heroSlides[normalized];
+  const swapDelay = immediate || reducedMotion ? 0 : 210;
+
+  heroDynamic?.classList.add('is-updating');
+  heroDescription?.classList.add('is-updating');
+  heroDishCard?.classList.add('is-updating');
+
+  window.setTimeout(() => {
+    heroSlides[heroIndex]?.classList.remove('is-active');
+    nextSlide.classList.add('is-active');
+    heroIndex = normalized;
+
+    const mood = nextSlide.dataset.mood || '';
+    const dish = nextSlide.dataset.dish || '';
+    const description = nextSlide.dataset.description || '';
+    const accent = nextSlide.dataset.accent || '#f39a35';
+
+    if (heroMoodWord) heroMoodWord.textContent = mood;
+    if (heroDescription) heroDescription.textContent = description;
+    if (heroDishName) heroDishName.textContent = dish;
+    if (heroSlideNumber) heroSlideNumber.textContent = `${String(heroIndex + 1).padStart(2, '0')} / ${String(heroSlides.length).padStart(2, '0')}`;
+    cinemaHero?.style.setProperty('--hero-accent', accent);
+    updateHeroDots();
+
+    requestAnimationFrame(() => {
+      heroDynamic?.classList.remove('is-updating');
+      heroDescription?.classList.remove('is-updating');
+      heroDishCard?.classList.remove('is-updating');
+      heroChanging = false;
+      scheduleHero();
+    });
+  }, swapDelay);
+}
+
+if (heroDots && heroSlides.length) {
+  heroSlides.forEach((slide, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.setAttribute('aria-label', `Show ${slide.dataset.dish || `dish ${index + 1}`}`);
+    button.addEventListener('click', () => showHeroSlide(index));
+    heroDots.appendChild(button);
+  });
+  updateHeroDots();
+}
+
+heroPrev?.addEventListener('click', () => showHeroSlide(heroIndex - 1));
+heroNext?.addEventListener('click', () => showHeroSlide(heroIndex + 1));
+
+function pauseHero() {
+  heroPaused = true;
+  window.clearTimeout(heroTimer);
+  heroVisual?.classList.remove('is-running');
+}
+
+function resumeHero() {
+  heroPaused = false;
+  scheduleHero();
+}
+
+heroVisual?.addEventListener('mouseenter', pauseHero);
+heroVisual?.addEventListener('mouseleave', resumeHero);
+heroVisual?.addEventListener('focusin', pauseHero);
+heroVisual?.addEventListener('focusout', (event) => {
+  if (!heroVisual.contains(event.relatedTarget)) resumeHero();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) pauseHero();
+  else resumeHero();
+});
+
+function startHeroAutoplay() {
+  if (heroStarted || !heroSlides.length) return;
+  heroStarted = true;
+  scheduleHero();
+}
+
+if (body.classList.contains('site-ready')) {
+  startHeroAutoplay();
+} else {
+  const readyObserver = new MutationObserver(() => {
+    if (body.classList.contains('site-ready')) {
+      readyObserver.disconnect();
+      startHeroAutoplay();
+    }
+  });
+  readyObserver.observe(body, { attributes: true, attributeFilter: ['class'] });
+}
+
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
