@@ -1,45 +1,239 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MOD Premium Logo Loader</title>
-<style>
-:root{
-  --cream:#f7f5ee;
-  --purple:#5c165d;
-  --gold:#fbb03b;
-  --caramel:#c7782e;
-  --ink:#2a102a;
-}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}.loader{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,#fff8ed 0 18%,#f7f5ee 54%,#eee5d7 100%);animation:loaderExit 1.05s cubic-bezier(.7,0,.2,1) 5.6s forwards}.ambient{position:absolute;inset:-20%;background:radial-gradient(circle at 35% 25%,rgba(251,176,59,.28),transparent 26%),radial-gradient(circle at 70% 70%,rgba(92,22,93,.16),transparent 30%);filter:blur(22px);animation:ambientMove 5.6s ease-in-out both}.logo-wrap{position:relative;width:min(78vw,520px);aspect-ratio:468/560;transform-origin:center;animation:logoExit 1s cubic-bezier(.7,0,.2,1) 5.45s forwards}.seal{position:absolute;left:0;top:0;width:100%;height:auto;transform-origin:50% 45%;}.blob-shadow{opacity:0;transform:scale(.55);filter:blur(10px);animation:blobIn 1.05s cubic-bezier(.17,.84,.28,1) .35s forwards, breathe 3s ease-in-out 1.7s infinite}.blob{opacity:0;transform:scale(.24) rotate(-7deg);filter:drop-shadow(0 24px 38px rgba(92,22,93,.2));animation:blobIn 1.15s cubic-bezier(.17,.84,.28,1) .48s forwards, blobSettle 1.8s ease-in-out 1.6s infinite}.blob-highlight{opacity:0;transform:scale(.72);mix-blend-mode:screen;animation:highlightIn .9s ease 1.25s forwards}.letter{position:absolute;height:auto;opacity:0;filter:blur(10px);transform:translateY(20px) scale(.94);animation:letterIn .85s cubic-bezier(.16,1,.3,1) forwards}.m{width:22.8%;left:24.8%;top:32.6%;animation-delay:1.48s}.d{width:20.1%;left:57.4%;top:32.6%;animation-delay:1.68s}.ice{position:absolute;width:22.5%;left:43.6%;top:23.8%;opacity:0;filter:blur(8px);transform:translateY(-44px) scale(.92);animation:iceIn 1s cubic-bezier(.18,.92,.22,1) 1.88s forwards}.tagline{position:absolute;width:69.2%;left:15.4%;top:68.8%;opacity:0;filter:blur(8px);transform:translateY(14px);animation:tagIn .95s cubic-bezier(.16,1,.3,1) 2.55s forwards}.gloss{position:absolute;left:-38%;top:8%;width:22%;height:74%;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);filter:blur(18px);transform:rotate(-24deg);opacity:0;animation:glossSweep 1.35s cubic-bezier(.4,0,.2,1) 3.45s forwards}.caption{position:absolute;left:0;right:0;bottom:2%;text-align:center;font-size:clamp(12px,2vw,15px);letter-spacing:.18em;text-transform:uppercase;color:rgba(42,16,42,.58);opacity:0;transform:translateY(8px);animation:captionIn .8s ease 3.05s forwards}.progress{position:absolute;left:24%;right:24%;bottom:-3%;height:2px;border-radius:99px;background:rgba(92,22,93,.14);overflow:hidden;opacity:0;animation:captionIn .8s ease 3.05s forwards}.progress:before{content:"";display:block;height:100%;width:0;background:linear-gradient(90deg,#5c165d,#fbb03b);animation:fill 1.65s cubic-bezier(.6,0,.2,1) 3.25s forwards}.home{min-height:100vh;display:grid;place-items:center;padding:28px;background:linear-gradient(135deg,#fffaf2,#f3eadf);opacity:0;transform:translateY(28px);animation:homeIn 1s ease 5.85s forwards}.home-card{max-width:780px;text-align:center}.home h1{font-size:clamp(44px,8vw,92px);line-height:.9;margin:0;color:#5c165d}.home p{font-size:clamp(16px,2vw,22px);line-height:1.6;color:#6d536d}.home button{border:0;border-radius:999px;padding:15px 24px;background:#5c165d;color:white;font-weight:700;box-shadow:0 14px 35px rgba(92,22,93,.22)}@keyframes ambientMove{0%{transform:translate3d(-2%,2%,0) scale(1.05)}100%{transform:translate3d(2%,-2%,0) scale(1)}}@keyframes blobIn{0%{opacity:0;transform:scale(.2) rotate(-10deg)}70%{opacity:1;transform:scale(1.035) rotate(.6deg)}100%{opacity:1;transform:scale(1) rotate(0)}}@keyframes blobSettle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.012)}}@keyframes breathe{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.012);opacity:1}}@keyframes highlightIn{to{opacity:1;transform:scale(1)}}@keyframes letterIn{0%{opacity:0;filter:blur(12px);transform:translateY(22px) scale(.94)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}@keyframes iceIn{0%{opacity:0;filter:blur(10px);transform:translateY(-52px) scale(.9)}70%{opacity:1;filter:blur(0);transform:translateY(4px) scale(1.035)}100%{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}@keyframes tagIn{to{opacity:1;filter:blur(0);transform:translateY(0)}}@keyframes glossSweep{0%{opacity:0;left:-35%}18%{opacity:.75}100%{opacity:0;left:116%}}@keyframes captionIn{to{opacity:1;transform:translateY(0)}}@keyframes fill{to{width:100%}}@keyframes logoExit{to{transform:translateY(-34vh) scale(.42);opacity:0;filter:blur(10px)}}@keyframes loaderExit{to{opacity:0;visibility:hidden;pointer-events:none}}@keyframes homeIn{to{opacity:1;transform:translateY(0)}}@media (max-width:480px){.logo-wrap{width:90vw}.m{left:24.2%}.d{left:58%}.tagline{width:74%;left:13%;top:68.6%}.caption{bottom:0}.progress{bottom:-4%;left:18%;right:18%}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#5a214f" />
+  <meta name="description" content="Moods of Desserts, Chiplun — burgers, sandwiches, momos, fries, sundaes and shakes made for every craving." />
+  <title>Moods of Desserts — Chiplun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="loader" aria-label="Loading MOD website">
-  <div class="ambient"></div>
-  <div class="logo-wrap">
-    <img class="seal blob-shadow" src="assets/blob-shadow.svg" alt="" />
-    <img class="seal blob" src="assets/blob.svg" alt="" />
-    <img class="seal blob-highlight" src="assets/blob-highlight.svg" alt="" />
-    <img class="letter m" src="assets/m.svg" alt="M" />
-    <img class="ice" src="assets/icecream-o.svg" alt="O ice cream" />
-    <img class="letter d" src="assets/d.svg" alt="D" />
-    <img class="tagline" src="assets/tagline.svg" alt="Moods of Desserts" />
-    <div class="gloss"></div>
-    <div class="caption">Crafting your dessert moment</div>
-    <div class="progress"></div>
+  <noscript>
+    <div class="noscript">Please enable JavaScript to view this experience.</div>
+  </noscript>
+
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__grain"></div>
+    <div class="loader__topline">
+      <span>MOD / CHIPLUN</span>
+      <span id="loaderCount">00</span>
+    </div>
+
+    <div class="loader__stage">
+      <p class="loader__eyebrow">TUNING YOUR CRAVING</p>
+      <div class="loader__dial" aria-hidden="true">
+        <svg viewBox="0 0 220 220" role="presentation">
+          <circle class="loader__track" cx="110" cy="110" r="91"></circle>
+          <circle class="loader__progress" id="loaderProgress" cx="110" cy="110" r="91"></circle>
+        </svg>
+        <div class="loader__logo-wrap">
+          <img src="assets/logo.webp" alt="" />
+        </div>
+        <span class="loader__scoop"></span>
+      </div>
+      <div class="loader__word-window" aria-hidden="true">
+        <div class="loader__words" id="loaderWords">
+          <span>CRISPY</span><span>CHEESY</span><span>SPICY</span><span>SWEET</span><span>CRISPY</span>
+        </div>
+      </div>
+      <p class="loader__sub">One place. Every mood.</p>
+    </div>
+
+    <div class="loader__curtain loader__curtain--left"></div>
+    <div class="loader__curtain loader__curtain--right"></div>
   </div>
-</div>
-<main class="home">
-  <section class="home-card">
-    <h1>Moods of Desserts</h1>
-    <p>A soft, premium landing-page placeholder so the loader transitions into a real website instead of a blank screen.</p>
-    <button>Explore Desserts</button>
-  </section>
-</main>
-<script>
-window.addEventListener('load',()=>{document.documentElement.classList.add('ready')});
-</script>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="Moods of Desserts home">
+      <img src="assets/logo.webp" alt="Moods of Desserts" />
+      <span class="brand__text">MOODS OF DESSERTS<small>CHIPLUN</small></span>
+    </a>
+
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#moods">Pick a mood</a>
+      <a href="#favourites">Favourites</a>
+      <a href="#visit">Visit</a>
+    </nav>
+
+    <a class="header-cta magnetic" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">
+      <span>ORDER / DM</span><span aria-hidden="true">↗</span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="#moods">Pick a mood</a>
+    <a href="#favourites">Favourites</a>
+    <a href="#visit">Visit us</a>
+    <a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">Instagram ↗</a>
+  </div>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__noise"></div>
+      <div class="hero__copy reveal">
+        <p class="kicker"><span></span> BURGERS • DESSERTS • MORE</p>
+        <h1 id="hero-title">
+          <span>WHAT'S</span>
+          <span>YOUR</span>
+          <span class="hero__mood">MOOD?</span>
+        </h1>
+        <div class="hero__bottom-copy">
+          <p>Freshly stacked, grilled, tossed and swirled for every craving in Chiplun.</p>
+          <a class="text-link" href="#moods">Find your mood <span>↓</span></a>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal">
+        <div class="hero__arch" data-parallax="0.035">
+          <img src="assets/burger.webp" alt="Crispy vegetarian burger with fries" />
+          <div class="hero__image-shade"></div>
+        </div>
+        <div class="hero__stamp" aria-hidden="true">
+          <span>FRESH • FAST • FULL OF FLAVOUR •</span>
+          <strong>MOD</strong>
+        </div>
+        <div class="hero__tag">01 / CRISPY</div>
+      </div>
+
+      <p class="hero__side-note">MADE IN CHIPLUN · SERVED WITH A MOOD</p>
+    </section>
+
+    <section class="ticker" aria-label="Menu categories">
+      <div class="ticker__track">
+        <span>BURGERS</span><i>✦</i><span>MOMOS</span><i>✦</i><span>FRIES</span><i>✦</i><span>SANDWICHES</span><i>✦</i><span>SUNDAES</span><i>✦</i><span>SHAKES</span><i>✦</i>
+        <span>BURGERS</span><i>✦</i><span>MOMOS</span><i>✦</i><span>FRIES</span><i>✦</i><span>SANDWICHES</span><i>✦</i><span>SUNDAES</span><i>✦</i><span>SHAKES</span><i>✦</i>
+      </div>
+    </section>
+
+    <section class="moods section-pad" id="moods" aria-labelledby="moods-title">
+      <div class="section-heading reveal">
+        <p class="kicker"><span></span> YOUR CRAVING, TRANSLATED</p>
+        <h2 id="moods-title">PICK A <em>MOOD.</em></h2>
+        <p>Not a regular menu grid. Start with the feeling, and we will take care of the food.</p>
+      </div>
+
+      <div class="mood-selector reveal" role="tablist" aria-label="Select a craving mood">
+        <button class="mood-tab is-active" data-mood="crispy" role="tab" aria-selected="true">
+          <span>01</span><strong>CRISPY</strong><small>crunch first</small>
+        </button>
+        <button class="mood-tab" data-mood="cheesy" role="tab" aria-selected="false">
+          <span>02</span><strong>CHEESY</strong><small>pulls guaranteed</small>
+        </button>
+        <button class="mood-tab" data-mood="spicy" role="tab" aria-selected="false">
+          <span>03</span><strong>SPICY</strong><small>heat with flavour</small>
+        </button>
+        <button class="mood-tab" data-mood="sweet" role="tab" aria-selected="false">
+          <span>04</span><strong>SWEET</strong><small>finish happy</small>
+        </button>
+      </div>
+
+      <div class="mood-stage reveal" id="moodStage">
+        <div class="mood-stage__copy">
+          <p class="mood-stage__number" id="moodNumber">01 / 04</p>
+          <h3 id="moodTitle">CRUNCH<br>MODE</h3>
+          <p id="moodDescription">Golden, layered and seriously satisfying. This is the mood that can be heard from across the table.</p>
+          <div class="mood-stage__meta">
+            <span id="moodDish">VEG CRISPY BURGER</span>
+            <span>MADE FRESH</span>
+          </div>
+        </div>
+        <div class="mood-stage__frame">
+          <img id="moodImage" src="assets/burger.webp" alt="Crispy burger" />
+          <span class="mood-stage__corner">MOD / CHIPLUN</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto">
+      <div class="manifesto__line reveal"><span>NO BORING BITES.</span><span class="outline">NO BORING BITES.</span></div>
+      <div class="manifesto__inner section-pad">
+        <p class="manifesto__index">02 / THE MOD WAY</p>
+        <h2 class="reveal">SAVOURY WHEN YOU'RE HUNGRY.<br><em>SWEET WHEN YOU'RE NOT.</em></h2>
+        <p class="manifesto__body reveal">From a steaming plate of momos to a loaded sundae, MOD is built around one simple idea: cravings do not follow categories.</p>
+      </div>
+    </section>
+
+    <section class="favourites section-pad" id="favourites" aria-labelledby="favourites-title">
+      <div class="favourites__head reveal">
+        <div>
+          <p class="kicker"><span></span> HOUSE FAVOURITES</p>
+          <h2 id="favourites-title">THE ONES PEOPLE<br>COME BACK FOR.</h2>
+        </div>
+        <p>Swipe on mobile or drag with your mouse. Each plate has its own little personality.</p>
+      </div>
+
+      <div class="dish-rail" id="dishRail">
+        <article class="dish-card dish-card--tall">
+          <div class="dish-card__image"><img src="assets/sandwich.webp" alt="Paneer cheese grilled sandwich" /></div>
+          <div class="dish-card__body"><span>01</span><h3>PANEER CHEESE<br>SANDWICH</h3><p>Smoky paneer, molten cheese, golden grill.</p></div>
+        </article>
+        <article class="dish-card dish-card--offset">
+          <div class="dish-card__image"><img src="assets/momos.webp" alt="Steamed momos with red chutney" /></div>
+          <div class="dish-card__body"><span>02</span><h3>STEAMED<br>MOMOS</h3><p>Soft folds, hot filling, fiery chutney.</p></div>
+        </article>
+        <article class="dish-card dish-card--tall">
+          <div class="dish-card__image"><img src="assets/fries.webp" alt="Peri peri mayonnaise fries" /></div>
+          <div class="dish-card__body"><span>03</span><h3>PERI PERI<br>MAYO FRIES</h3><p>Spiced, saucy and impossible to share.</p></div>
+        </article>
+        <article class="dish-card dish-card--offset">
+          <div class="dish-card__image"><img src="assets/sundae.webp" alt="KitKat chocolate sundae" /></div>
+          <div class="dish-card__body"><span>04</span><h3>KITKAT<br>SUNDAE</h3><p>Vanilla, chocolate drizzle and KitKat crunch.</p></div>
+        </article>
+        <article class="dish-card dish-card--tall">
+          <div class="dish-card__image"><img src="assets/shake.webp" alt="Chocolate brownie shake" /></div>
+          <div class="dish-card__body"><span>05</span><h3>BROWNIE<br>SHAKE</h3><p>Rich fudge, dark chocolate, full indulgence.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="split-story section-pad">
+      <div class="split-story__image reveal">
+        <img src="assets/momos.webp" alt="Fresh hot momos" />
+        <span>STEAMY / SOFT / FULL OF FLAVOUR</span>
+      </div>
+      <div class="split-story__copy reveal">
+        <p class="split-story__index">03 / FROM STEAM TO SWIRL</p>
+        <h2>ONE TABLE.<br><em>TWO VERY DIFFERENT MOODS.</em></h2>
+        <p>Bring the group. One person can order momos, another can order a shake, and nobody has to compromise.</p>
+        <div class="split-story__mini">
+          <img src="assets/shake.webp" alt="Chocolate shake" />
+          <div><strong>SWEET ENDING?</strong><span>Always a good idea.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="visit" id="visit" aria-labelledby="visit-title">
+      <div class="visit__copy section-pad reveal">
+        <p class="kicker kicker--light"><span></span> FIND YOUR NEXT MOOD</p>
+        <h2 id="visit-title">CHIPLUN,<br>COME HUNGRY.</h2>
+        <p>For the latest menu, offers and ordering details, message Moods of Desserts directly on Instagram.</p>
+        <a class="visit__button magnetic" href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">
+          <span>DM @MOD_CHIPLUN</span><span>↗</span>
+        </a>
+      </div>
+      <div class="visit__visual reveal">
+        <img src="assets/sundae.webp" alt="Chocolate KitKat sundae" />
+        <div class="visit__seal"><span>ONE PLACE</span><strong>EVERY<br>MOOD</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="footer__logo" href="#top"><img src="assets/logo.webp" alt="Moods of Desserts" /></a>
+    <p>BURGERS · MOMOS · FRIES · SANDWICHES · SUNDAES · SHAKES</p>
+    <div><span>CHIPLUN, MAHARASHTRA</span><a href="https://www.instagram.com/mod_chiplun/" target="_blank" rel="noreferrer">INSTAGRAM ↗</a></div>
+    <small>DEMO WEBSITE CONCEPT — CONTENT BASED ON THE BUSINESS' PUBLIC INSTAGRAM CREATIVE.</small>
+  </footer>
+
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <script src="script.js"></script>
 </body>
 </html>
